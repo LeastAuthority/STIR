@@ -1,0 +1,17 @@
+\chapter{The Reed-Solomon Code}
+
+\begin{definition}[Error-Correcting Code]
+    An \emph{error-correcting code} of length \(n\) over an alphabet \(\Sigma\) is a subset \(\code \subseteq \Sigma^n\). The code \(\code\) is called a \emph{linear code} if
+    \(\Sigma = \field\) is a field and \(\code\) is a subspace of \({\field}^n\).
+\end{definition}
+
+\begin{definition}[Reed-Solomon Code]
+    Let $\field$ be a field, let $\evaldomain \subseteq \field$ be an evaluation domain, and let $degree \in \mathbb{N}$. The \emph{Reed-Solomon code} $\rscode[\field,\evaldomain,\degree]$ is the set of evaluations (over $\evaldomain$) of univariate polynomials (over $\field$) of degree less than $\degree$. Formally,
+    \[
+        \rscode[\field,\evaldomain,\degree]:=\; \bigl\{\, f : \evaldomain \to \field \;\big|\; \exists \,\hat{f} \,\in \field^{<\degree}[X]\text{ such that } \forall x \in \evaldomain,\; f(x) = \hat{f}(x)\bigr\}.
+    \]
+
+    The rate of $\rscode[\field,\evaldomain,\degree]$ is $\rate := \frac{\degree}{\lvert \evaldomain \rvert}$.
+
+    Given a code $\code := \rscode[\field,\evaldomain,\degree]$ and a function $f : \evaldomain \to \field$, we sometimes use $\hat{f} \in \field^{<\degree}[X]$ to denote a nearest polynomial to $f$ on $\evaldomain$ (breaking ties arbitrarily).
+\end{definition}
