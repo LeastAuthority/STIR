@@ -1,6 +1,10 @@
 import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Data.Finset.Basic
+import Mathlib.Tactic.NormNum
+import Mathlib.Data.Nat.Prime.Basic
+
 
 open Polynomial
 
