@@ -1,0 +1,20 @@
+\section{Univariate Function Quotienting}
+
+In the following, we start by defining the \emph{quotient} of a univariate function.
+\begin{definition}
+    Let $f:\evaldomain\to\field$ be a function, $S\subseteq\field$ be a set, and $\mathsf{Ans},\mathsf{Fill}: S\rightarrow\field$ be functions. Let $\hat{\mathsf{Ans}}\in\field^{<|S|}[X]$ be the (unique) polynomial with $\hat{\mathsf{Ans}}(x)=\mathsf{Ans}(x)$ for every $x\in S$, and let $\hat{V}_S\in\field^{<|S|+1}[X]$ be the unique non-zero polynomial with $\hat{V}_S(x)=0$ for every $x\in S$.
+    The \emph{quotient function} $\mathsf{Quotient}\bigl(f,S,\mathsf{Ans},\mathsf{Fill}\bigr): \evaldomain\to\field$
+    is defined as follows:
+\[
+\forall x \in \evaldomain,\quad
+\mathsf{Quotient}\bigl(f,S,\mathsf{Ans},\mathsf{Fill}\bigr)(x)
+:=
+\begin{cases}
+\mathsf{Fill}(x)
+& \text{if } x \in S \\[6pt]
+\dfrac{f(x) - \hat{\mathsf{Ans}}(x)}{V_S(x)}
+& \text{otherwise}
+\end{cases}
+\]
+\end{definition}
+
