@@ -19,3 +19,23 @@
 \begin{remark}
 Note that the evaluation domain $\evaldomain\subseteq\field$ is a non-empty set.
 \end{remark}
+
+\begin{definition}
+    For a Reed-Solomon code $\code := \rscode[\field,\evaldomain,\degree]$, parameter $\distance \in [0,1]$, 
+    and a function $f:\evaldomain\to\field$, let $\listcode(f,\degree,\distance)$ denote the list 
+    of codewords in $\code$ whose relative Hamming distance from $f$ is at most $\distance$.
+    We say that $\code$ is \emph{$(\distance,\degree)$-list decodable} if 
+    \[
+    \bigl|\listcode(f,\degree,\distance)\bigr| < |L|
+    \quad
+    \text{for every function } f.
+    \]
+\end{definition}
+    
+    \noindent
+    The Johnson bound provides an upper bound on the list size of this Reed-Solomon code:
+    
+    \begin{theorem}[Johnson bound]
+    The Reed-Solomon code $\rscode[\field,\evaldomain,\degree]$ is $(1-\sqrt{\rate}-\eta,\frac{1}{2\eta\rate})$-list-decodable for every $\eta\in(0,1-\sqrt{\rate})$, where $\rate:=\frac{\degree}{|\evaldomain|}$ is the rate of the code.
+    \end{theorem}
+    
