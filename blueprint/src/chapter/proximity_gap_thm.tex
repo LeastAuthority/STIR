@@ -1,0 +1,38 @@
+\chapter{Tools for Reed-Solomon Codes}
+
+\section{Random Linear Combination as a Proximity Generator}
+
+
+\begin{theorem}
+    Let $\code := \rscode[\field,\evaldomain,\degree]$ be a Reed-Solomon code with rate $\rate:=\frac{\degree}{|\evaldomain|}$ and let $B'(\rate):=\sqrt{\rate}$. For every $\distance \in (0,1 - B'(\rate))$ and functions $f_1,\ldots,f_m : \evaldomain \to \field$, if
+    \[
+    \Pr_{r\leftarrow\field}\!\Bigl[
+      \Delta\Bigl(\sum_{j=1}^m r^{j - 1}\cdot {f_j},\rscode[\field,\evaldomain,\degree]\Bigr)
+      \le \delta
+    \Bigr]>\err'(\degree,\rate,\distance,m),
+    \]
+    then there exists a subset $S \subseteq \evaldomain$ with 
+    \[
+    |S| \ge (1 - \delta)\cdot|L|,
+    \]
+    and for every $i \in [m]$, there exists $u \in \rscode[\field,\evaldomain,\degree]$ such that
+    \[
+    f_i(S) = u(S).
+    \]
+    
+    \medskip
+    
+    \noindent
+    Above, $\err'(\degree,\rate,\distance,m)$ is defined as follows:
+    \begin{itemize}
+        \item if $\distance \in \left(0,\frac{1-\rate}{2}\right]$ then
+            \[
+                \err'(\degree,\rate,\distance,m)=\frac{(m-1)\cdot \degree}{\rate\cdot|\field|}
+            \]
+        \item if $\distance \in \Bigl(\frac{1-\rate}{2}, 1-\sqrt{\rate}\Bigr)$ then
+        \[
+            \err'(\degree,\rate,\distance,m)=\frac{(m-1)\cdot {\degree}^2}{|\field|\cdot{\Bigl(2\cdot\min{1-\sqrt{\rate}-\distance,\frac{\sqrt{\rate}}{20}}\Bigr)}^7}
+        \]
+    \end{itemize}
+    \end{theorem}
+    
