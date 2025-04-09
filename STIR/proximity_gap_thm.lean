@@ -1,6 +1,8 @@
 import STIR.ReedSolomonCodes
 
 import Mathlib.Data.Real.Sqrt
+import Mathlib.Probability.Distributions.Uniform
+import Mathlib.InformationTheory.Hamming
 
 
 /-
