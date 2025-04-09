@@ -1,0 +1,8 @@
+\section{Out of Domain Sampling}
+\begin{lemma}
+    Let $f:\evaldomain\rightarrow\field$ be a function, $\degree\in\N$ be a degree parameter, $s\in\N$ be a repetition parameter, and $\distance\in(0,1)$ be a distance parameter. If $\rscode[\field,\evaldomain,\degree]$ be $(\degree,l)$-list decodable then
+    \begin{align*}
+    \Pr_{r_1,\ldots,r_l\gets\field\setminus\evaldomain}[\exists\text{ distinct }u,u'\in\listcode(f,\degree,\distance):\forall i\in[s],\hat{u}(i)=\hat{u}'(i)] & \leq \binom{l}{2}\cdot{\Big(\frac{\degree-1}{|\field|-|\evaldomain|}\Big)}^s \\
+    & \leq \Big(\frac{l^2}{2}\Big)\cdot{\Big(\frac{\degree}{|\field|-|\evaldomain|}\Big)}^s
+    \end{align*}
+\end{lemma}
