@@ -6,47 +6,30 @@ import Mathlib.Tactic.NormNum
 import Mathlib.Data.Nat.Prime.Basic
 
 
-open Polynomial
+/- THIS IS A PLACEHOLDER STRUCTURE AND NOT A GOOD DEFINITION YET. WE NEED THE SET OF
+   CODEWORDS TO BE FINITE AND IN ORDER FOR FINSET TO BE CONSTRUCTED WE NEED TO EXPLICITLY
+   COMPUTE AN ASSOCIATED POLYNOMIAL TO ANY GIVEN CODEWORD [E.G. BY LAGRANGE INTERPOLATION]
+   TBD -/
 
-/-
-We choose to use a structure for Reed–Solomon codes rather than a type definition (subset) for the following reasons:
+open Polynomial  -- for monomial, X, etc.
+open Finset      -- for using Finset.univ without qualification
 
-1. **Parameter Bundling:**
-   A structure bundles the parameters (the field `F`, the evaluation domain `L`, and the degree bound `d`)
-   into a single object. This simplifies statements like "Let C be a ReedSolomonCode F L d" in theorems.
+noncomputable def polynomialsUpTo (F : Type*) [Field F] [Fintype F] [DecidableEq F]  (d : ℕ) : Finset (Polynomial F) :=
+  (Finset.univ : Finset (Fin d → F)).image (λ c => ∑ i : Fin d, Polynomial.monomial (i : ℕ) (c i))
 
-2. **Explicit Parameters:**
-   The structure explicitly stores `L`, `d`, and the associated properties, which makes it easier to access
-   these parameters in proofs and definitions.
+def polynomialEvalOn (F : Type*) [Field F] [Fintype F] [DecidableEq F] (L : Finset F) (p : Polynomial F) : (L → F) :=
+  fun (x : L) => p.eval x.val
 
-3. **Derived Properties:**
-   Additional properties (such as the rate, minimum distance, encoding, decoding functions, etc.) can be
-   conveniently defined as functions within the namespace of the structure.
+noncomputable def reedSolomonCodeFinset (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+  (L : Finset F) (hL : L.Nonempty) (d : ℕ) : Finset (L → F) :=
+  (polynomialsUpTo F d).image (polynomialEvalOn F L)
 
-4. **Modularity and Extensibility:**
-   Using a structure improves readability and maintainability. If we need to modify or extend the definition
-   later, all parameters and properties are neatly encapsulated.
+structure ReedSolomonCode (F : Type*) [Field F] [Fintype F] [DecidableEq F] where
+  L          : Finset F
+  nonempty_L : L.Nonempty
+  d          : ℕ
+  code       : Finset (L → F)
+  code_def   : code = (polynomialsUpTo F d).image (polynomialEvalOn F L)
 
-For comparison, a lightweight type definition for Reed–Solomon codes could look like this:
-
-def reedSolomonCode {F : Type*} [Field F] {L : Finset F} {d : ℕ} {_hL : L.Nonempty} : Set (L → F) :=
-{ f | ∃ (p : Polynomial F), p.natDegree < d ∧ ∀ (x : F) (hx : x ∈ L), f ⟨x, hx⟩ = p.eval x }
-
-This type definition is simpler but does not bundle the parameters together, making it less convenient
-for large developments where many theorems refer to a Reed–Solomon code with specific parameters.
--/
-
--- Define the ReedSolomonCode structure
-structure ReedSolomonCode (F : Type*) [Field F] where
-  L            : Finset F                            -- evaluation domain (finite set of points in F)
-  hL           : L.Nonempty                          -- evaluation domain is nonempty
-  d            : ℕ                                   -- degree bound (e.g. one plus the message polynomial degree)
-  code         : Set (L → F)                         -- subset of functions L → F
-  constraint   : code = { f | ∃ p : Polynomial F,    -- exactly polynomial evaluations
-    p.natDegree < d ∧ ∀ (x : F) (hx : x ∈ L), f ⟨x, hx⟩ = p.eval x }
-
-
-
--- Define a method to compute the code's rate
-def ReedSolomonCode.rate {F : Type*} [Field F] (C : ReedSolomonCode F) : ℚ :=
+def ReedSolomonCode.rate {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : ℚ :=
   (C.d : ℚ) / (C.L.card : ℚ)
