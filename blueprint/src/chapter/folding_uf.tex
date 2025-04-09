@@ -1,0 +1,25 @@
+\section{Folding Univariate Functions}
+STIR relies on $k$-wise folding of functions and polynomials - this is similar to prior works, although presented in a slightly different form. As shown below, folding a function preserves proximity from the Reed-Solomon code with high probability. 
+
+The folding operator is based on the following fact, decomposing univariate polynomials into bivariate ones.
+
+\begin{fact}\label{fact:poly_folding} %todo- add citation BS08
+Given a polynomial $\hat{q}\in\field[X]$:
+\begin{itemize}
+    \item For every univariate polynomial $\hat{f}\in\field[X]$, there exists a unique bivariate polynomial $\hat{Q}\in\field[X,Y]$ with $\polydeg_X(\hat{Q}):=\lfloor{\polydeg(\hat{f})}/{\polydeg(\hat{q})}\rfloor$ and $\polydeg_Y(\hat{Q})<\polydeg(\hat{q})$ such that $\hat{f}(Z)=\hat{Q}(\hat{q}(Z),Z)$. Moreover $\hat{Q}$ can be computed efficiently given $\hat{f}$ and $\hat{q}$. Observe that if $\polydeg(\hat{f})<t\cdot\polydeg(\hat{q})$ then $\polydeg(\hat{Q})<t$.
+    \item For every $\hat{Q}[X,Y]$ with $\polydeg_X(\hat{Q})<t$ and $\polydeg_Y(\hat{Q})<\polydeg(\hat{q})$, the polynomial $\hat{f}(Z)=\hat{Q}(\hat{q}(Z),Z)$ has degree $\polydeg(\hat{f})<t\cdot\polydeg(\hat{q})$.
+\end{itemize}
+\end{fact}
+
+Below, we define folding of a polynomial followed by folding of a function.
+\begin{definition}
+    Given a polynomial $\hat{f}\in\field^{<\degree}[X]$, a folding parameter $k\in\N$ and $r\in\field$, we define a polynomial $\mathsf{PolyFold}(\hat{f},k,r)\in\field^{\degree/k}[X]$ as follows. Let $\hat{Q}[X,Y]$ be the bivariate polynomial derived from $\hat{f}$ using Fact~\ref{fact:poly_folding} with $\hat{q}(X):=X^k$. Then $\mathsf{PolyFold}(\hat{f},k,r)(X):=\hat{Q}(X,r)$.
+\end{definition}
+
+\begin{definition}
+Let $f:\evaldomain\rightarrow\field$ be a function, $k\in\N$ a folding parameter and $\alpha\in\field$. For every $x\in{\evaldomain}^k$, let $\hat{p}_x\in\field^{<k}[X]$ be the polynomial where $\hat{p}_x(y)=f(y)$ for every $y\in{\evaldomain}$ such that $y^k=x$. We define $\mathsf{Fold}(f,k,\alpha):\evaldomain\rightarrow\field$ as follows.
+\[
+    \mathsf{Fold}(f,k,\alpha):=\hat{p}_x(\alpha).
+\]
+In order to compute $\mathsf{Fold}(f,k,\alpha)(x)$ it suffices to interpolate the $k$ values $\{f(y):y\in\evaldomain\text{ s.t. }y^k=x\}$ into the polynomial $\hat{p}_x$ and evaluate this polynomial at $\alpha$.
+\end{definition}
