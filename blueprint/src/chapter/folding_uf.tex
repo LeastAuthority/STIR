@@ -23,3 +23,13 @@ Let $f:\evaldomain\rightarrow\field$ be a function, $k\in\N$ a folding parameter
 \]
 In order to compute $\mathsf{Fold}(f,k,\alpha)(x)$ it suffices to interpolate the $k$ values $\{f(y):y\in\evaldomain\text{ s.t. }y^k=x\}$ into the polynomial $\hat{p}_x$ and evaluate this polynomial at $\alpha$.
 \end{definition}
+
+The following lemma shows that the distance of a function is preserved under folding. If a functions $f$ has distance $\distance$ to a Reed-Solomon code then, with high probability over the choice of folding randomness, its folding also has a distance of $\distance$ to the ``$k$-wise folded'' Reed-Solomon code.
+
+\begin{lemma}
+    For every function $f:\evaldomain\rightarrow\field$, degree parameter $\degree\in\N$, folding parameter $k\in\N$, distance parameter $\distance\in(0,\min\{{\Delta(\mathsf{Fold}[f,k,r^{\mathsf{fold}}],\rscode[\field,{\evaldomain}^k, \degree/k]),1-{\mathsf{B}}^*(\rate)}\})$, letting $\rate:=\frac{\degree}{|\evaldomain|}$,
+    \[
+        \Pr_{r^{\mathsf{fold}}\gets\field}[\Delta(\mathsf{Fold}[f,k,r^{\mathsf{fold}}],\rscode[\field,{\evaldomain}^k, \degree/k])<\distance]>\err^*(\degree/k,\rate,\distance,k).
+    \]
+    Above, ${\mathsf{B}}^*$ and ${\err}^*$ are the proximity bound and error (respectively) described in Section~\ref{sec:proximity_gap}.
+\end{lemma}
