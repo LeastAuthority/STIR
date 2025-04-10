@@ -1,41 +1,60 @@
 import STIR.ReedSolomonCodes
 import STIR.FracHammingDist
 
-import Mathlib.Data.Real.Sqrt
+import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Real.Basic
+import Mathlib.Data.Real.Sqrt
 
+noncomputable def err'
+  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+  (d : ℕ)
+  (ρ : ℚ)
+  (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt ρ})
+  (m : ℕ) : ENNReal :=
+  ENNReal.ofReal (
+    if δ.val ≤ (1 - ρ) / 2 then
+      ((m - 1 : ℝ) * d) / (ρ * (Fintype.card F))
+    else
+      let min_val := min (1 - Real.sqrt ρ - δ.val) (Real.sqrt ρ / 20)
+      ((m - 1 : ℝ) * (d : ℝ)^2) / ((Fintype.card F) * (2 * min_val)^7)
+  )
+
+theorem proximity_gap
+  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+  (C : ReedSolomonCode F) :
+  ∀ δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate} →
+  ∀ (m : ℕ) (f : Fin m → (C.L → F)),
+  (PMF.uniformOfFintype F).toOuterMeasure { r |
+    fractionalHammingDistSet
+      (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
+      (C.code)
+      (C.nonempty)
+    ≤ δ} > err' F C.d C.rate δ m →
+    ∃ (S : Finset F),
+      S ⊆ C.L ∧
+      S.card ≥ (1 - δ) * C.L.card ∧
+      ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩:= by
+  sorry
 
 /-
-Let Δ(.,.) be the fractional hamming distance between a function and a set,
-let C[F,L,d] be a Reed Solomon Code with rate ρ = d/|L|, let δ be a real number and
-let f_1, ..., f_m : L → F be functions, such that:
- - δ is in the range (0, √ρ)
- -
-
-then
-
-
-
- -/
+ALTERNATIVE VERSION. MIGHT BE LOGICALLY EQUIVALENT
 theorem proximity_gap
-  -- Let
-  (F : Type*) [Field F] [Fintype F] [DecidableEq F] [MeasurableSpace F]
+  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (C : ReedSolomonCode F)
-  (δ : ℝ)
+  (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate})
   (m : ℕ) (f : Fin m → (C.L → F))
-  -- such that
-  (hδ : 0 < δ ∧ δ < 1 - Real.sqrt C.rate)   -- δ ∈ (0, 1 - √ρ)
-  (err' : ℕ → ℚ → ℝ → ℕ → ℝ)
-  (hprob : (PMF.uniformOfFintype F).toMeasure { r |
-  fractionalHammingDistSet
-    (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
-    (C.code)
-    (TBD)
-  ≤ δ
-}.toReal > err' C.d C.rate δ m)
-  -- then
-  : ∃ (S : Finset F),
+  (hprob : (PMF.uniformOfFintype F).toOuterMeasure { r |
+    fractionalHammingDistSet
+      (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
+      (C.code)
+      (C.nonempty)
+    ≤ δ.val} > err' F C.d C.rate δ m) :
+    ∃ (S : Finset F),
     S ⊆ C.L ∧
-    S.card ≥ (1 - δ) * C.L.card ∧
-    ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩:= by
+    S.card ≥ (1 - δ.val) * C.L.card ∧
+    ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩ := by
   sorry
+-/

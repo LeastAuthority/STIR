@@ -33,3 +33,6 @@ structure ReedSolomonCode (F : Type*) [Field F] [Fintype F] [DecidableEq F] wher
 
 def ReedSolomonCode.rate {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : ℚ :=
   (C.d : ℚ) / (C.L.card : ℚ)
+
+-- Ensures the Reed-Solomon code is nonempty
+theorem ReedSolomonCode.nonempty {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : C.code.Nonempty := sorry
