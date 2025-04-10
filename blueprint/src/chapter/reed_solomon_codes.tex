@@ -5,7 +5,9 @@
     \(\Sigma = \field\) is a finite field and \(\code\) is a subspace of \({\field}^n\).
 \end{definition}
 
-\begin{definition}[Reed-Solomon Code]
+\begin{definition}[Reed-Solomon Code]\label{def:rscode}
+%\lean{}
+%\leanok
     The \emph{Reed-Solomon code} over finite field $\field$, evaluation domain $\evaldomain\subseteq\field$ and degree $d\in\N$ is the set of evaluations (over $\evaldomain$) of univariate polynomials (over $\field$) of degree less than $\degree$:
     \[
         \rscode[\field,\evaldomain,\degree]:=\; \bigl\{\, f : \evaldomain \to \field \;\big|\; \exists \,\hat{f} \,\in \field^{<\degree}[X]\text{ such that } \forall x \in \evaldomain,\; f(x) = \hat{f}(x)\bigr\}.
@@ -20,7 +22,10 @@
 Note that the evaluation domain $\evaldomain\subseteq\field$ is a non-empty set.
 \end{remark}
 
-\begin{definition}
+\begin{definition}\label{def:list_decodable}
+%\lean{}
+%\leanok
+\uses{def:rscode}
     For a Reed-Solomon code $\code := \rscode[\field,\evaldomain,\degree]$, parameter $\distance \in [0,1]$, 
     and a function $f:\evaldomain\to\field$, let $\listcode(f,\degree,\distance)$ denote the list 
     of codewords in $\code$ whose relative Hamming distance from $f$ is at most $\distance$.
@@ -35,7 +40,10 @@ Note that the evaluation domain $\evaldomain\subseteq\field$ is a non-empty set.
     \noindent
     The Johnson bound provides an upper bound on the list size of this Reed-Solomon code:
     
-    \begin{theorem}[Johnson bound]
+    \begin{theorem}[Johnson bound]\label{thm:johnson_bnd}
+    %\lean{}
+    %\leanok
+    \uses{def:rscode,def:list_decodable}
     The Reed-Solomon code $\rscode[\field,\evaldomain,\degree]$ is $(1-\sqrt{\rate}-\eta,\frac{1}{2\eta\rate})$-list-decodable for every $\eta\in(0,1-\sqrt{\rate})$, where $\rate:=\frac{\degree}{|\evaldomain|}$ is the rate of the code.
     \end{theorem}
     

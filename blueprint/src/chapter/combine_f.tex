@@ -12,7 +12,50 @@ We show a new method for combining functions of varying degrees with minimal pro
     \]
 \end{fact}
 
-\begin{definition}
+\begin{definition}\label{def:combine}
+%\lean{}
+%\leanok
+%\uses{}
     Given target degree $\degree\in\N$, shifting parameter $r$, functions $f_1,\ldots,f_m:\evaldomain\rightarrow\field$, and degrees $0\leq \degree_1,\ldots,\degree_m\leq {\degree}^*$, we define $\combine(\degree^*,r,(f_1,\degree_1),\ldots,(f_m,\degree_m)):\evaldomain\rightarrow\field$ as follows:
-    
+    \begin{align*}
+        \combine({\degree}^*,r,(f_1,\degree_1),\ldots,(f_m,\degree_m))(x)&:=\sum_{i=1}^{m}r_i\cdot f_i(x)\cdot \Big(\sum_{l=0}^{\degree^*-\degree_i}{(r\cdot x)}^l\Big) \\
+        &= 
+        \begin{cases}
+            \sum_{i=1}^{m}r_i\cdot f_i(x)\cdot \Big(\frac{1-{(xr)}^{\degree^*-\degree_i+1}}{1-xr}\Big) & x\cdot r\neq 1\\
+            \sum_{i=1}^{m}r_i\cdot f_i(x)\cdot (\degree^*-\degree_i+1) & x\cdot r= 1
+        \end{cases}
+    \end{align*}
+Above, $r_1:=1$, $r_i:=r^{i-1+\sum_{j<i}(\degree^*-\degree_i)}$ for $i>1$.
 \end{definition}
+
+\begin{definition}\label{def:deg_corr}
+%\lean{}
+%\leanok
+\uses{def:combine}
+    Given target degree $\degree\in\N$, shifting parameter $r$, function $f:\evaldomain\rightarrow\field$, and degree $0\leq\degree\leq\degree^*$, we define $\degcorr(\degree^*,r,f,\degree)$ as follows.
+    \[
+        \degcorr(\degree^*,r,f,\degree)(x):=f(x)\cdot\Bigg(\sum_{i=0}^{m}{(r\cdot x)}^l\Bigg)=
+        \begin{cases}
+            f(x)\cdot\frac{1-{(xr)}^{\degree^*-\degree_i+1}}{1-xr} & x\cdot r\neq 1\\
+            f(x)\cdot (\degree^*-\degree_i+1) & x\cdot r= 1
+        \end{cases}
+    \]
+(Observe that $\degcorr(\degree^*,r,f,\degree)=\combine(\degree^*,r,(f,\degree))$.)
+\end{definition}
+
+Below it is shown that combining multiple polynomials of varying degrees can be done as long as the proximity error is bounded by $(\min{\{1-{\mathsf{B}}^*(\rate),1-\rate-1/|\evaldomain|\}})$.
+
+\begin{lemma}\label{lemma:combine}
+%\lean{}
+%\leanok
+\uses{def:rscode,def:combine,def:deg_corr}
+    Let $\degree^*$ be a target degree, $f_1,\ldots,f_m:\evaldomain\rightarrow\field$ be functions, $0\leq \degree_1,\ldots,\degree_m\leq \degree^*$ be degrees, $\distance\in\min{\{1-{\mathsf{B}}^*(\rate),1-\rate-1/|\evaldomain|\}}$ be a distance parameter, where $\rate=\degree^*/|\evaldomain|$. If
+    \[
+        \Pr_{r\gets\field}[\Delta(\combine(\degree^*,r,(f_1,\degree_1),\ldots,(f_m,\degree_m)),\rscode[\field,\evaldomain,\degree^*])]>\err^*(\degree^*,\rate,\distance,m\cdot(\degree^*+1)-\sum_{i=1}^{m}\degree_i),
+    \] 
+    then there exists $S\subseteq \evaldomain$ with $|S|\geq(1-\distance)\cdot|\evaldomain|$, and
+    \[
+        \forall i\in[m],\exists u\in\rscode[\field,\evaldomain,\degree_i], f_i(S)=u(S).
+    \]
+    Note that this implies $\Delta(f_i,\rscode[\field,\evaldomain,\degree_i])<\distance$ for every $i$. Above, ${\mathsf{B}}^*$ and ${\err}^*$ are the proximity bound and error (respectively) described in Section~\ref{sec:proximity_gap}.
+\end{lemma}

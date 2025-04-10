@@ -3,7 +3,10 @@
 \section{Random linear combination as a proximity generator}\label{sec:proximity_gap}
 
 
-\begin{theorem}
+\begin{theorem}\label{thm:proximity_gap}
+%\lean{}
+%\leanok
+\uses{def:rscode}
     Let $\code := \rscode[\field,\evaldomain,\degree]$ be a Reed-Solomon code with rate $\rate:=\frac{\degree}{|\evaldomain|}$ and let $B'(\rate):=\sqrt{\rate}$. For every $\distance \in (0,1 - B'(\rate))$ and functions $f_1,\ldots,f_m : \evaldomain \to \field$, if
     \[
     \Pr_{r\leftarrow\field}\!\Bigl[
