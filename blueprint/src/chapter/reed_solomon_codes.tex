@@ -1,13 +1,13 @@
 \chapter{The Reed-Solomon code}
 
-\begin{definition}[Error-Correcting Code]
+\begin{definition}[Error-Correcting Code]\label{def:eccode}
     An \emph{error-correcting code} of length \(n\) over an alphabet \(\Sigma\) is a subset \(\code \subseteq \Sigma^n\). The code \(\code\) is called a \emph{linear code} if
     \(\Sigma = \field\) is a finite field and \(\code\) is a subspace of \({\field}^n\).
 \end{definition}
 
 \begin{definition}[Reed-Solomon Code]\label{def:rscode}
-%\lean{}
-%\leanok
+\lean{ReedSolomonCodes}
+\leanok
     The \emph{Reed-Solomon code} over finite field $\field$, evaluation domain $\evaldomain\subseteq\field$ and degree $d\in\N$ is the set of evaluations (over $\evaldomain$) of univariate polynomials (over $\field$) of degree less than $\degree$:
     \[
         \rscode[\field,\evaldomain,\degree]:=\; \bigl\{\, f : \evaldomain \to \field \;\big|\; \exists \,\hat{f} \,\in \field^{<\degree}[X]\text{ such that } \forall x \in \evaldomain,\; f(x) = \hat{f}(x)\bigr\}.
