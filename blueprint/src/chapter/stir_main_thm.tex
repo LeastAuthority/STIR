@@ -1,4 +1,4 @@
-\section{STIR}
+\chapter{STIR}
 \begin{theorem}[STIR Main Theorem]\label{thm:stir}
     Consider the following ingrediants:
     \begin{itemize}
@@ -29,4 +29,28 @@ Consider the following ingrediants:
     \item out of domain repetition parameter $s\in\N$.
 \end{itemize}
 For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$. The protocol proceeds as follows.
+
+\begin{itemize}
+  \item\textbf{Initial function:} Let $f_0:\evaldomain\rightarrow\field$ be an oracle function. In the honest case, $f_0=\rscode[\field,\evaldomain_0,\degree_0]$ and the prover has access to the polynomial $\hat{f}\in\field^{<\degree_0}[X]$ whose restriction to $\evaldomain_0$ is $f_0$.
+  \item \textbf{Initial folding:} The verifier sends $r^{\mathsf{Fold}}\gets\field$
+  \item \textbf{Interaction phase loop:} For $i\in\{1,\ldots,M\}$:
+  \begin{enumerate}
+    \item \textbf{Send folded function:} The prover sends a function $g_i:\evaldomain_i\rightarrow\field$. In the honest case $g_i$ is the evaluation of the polynomial $\hat{g}_i:=\mathsf{PolyFold}(\hat{f}_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ over $\evaldomain_i$.
+    \item \textbf{Out-of-domain samples:} The verifier sends $r_{i,1}^{\mathsf{out}},\ldots,r_{i,s}^{\mathsf{out}}\in\field\setminus\evaldomain_i$
+    \item \textbf{Out-of-domain reply:}
+    The prover sends field elements
+    $\beta_{i,1},\dots,\beta_{i,s}\in\field$. In the honest case,
+    $\beta_{i,j}:=\hat{g}_{i}(r_{i,j}^{\mathsf{out}})$.
+    \item \textbf{STIR message:} The verifier sends $r^{\mathsf{fold}}_i,r^{\mathsf{shift}}_i\in\field$ and $r_{i,1}^{\mathsf{shift}},\ldots,r_{i,t_{i-1}}^{\mathsf{shift}}\gets\evaldomain^{k_i-1}_{i-1}$
+    \item \textbf{Define next polynomial and send hole fills:} The prover sends the oracle message $\mathsf{Fill}_i:=(r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}})\cap\evaldomain_i\rightarrow\field$. In the honest case, the prover defines $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$, $\hat{g}'_i:=\mathsf{PolyQuotient}(\hat{g}_i,\mathcal{G}_i)$ and $\mathsf{Fill}_i(r^{\mathsf{shift}}_{i,j}):=\hat{g}'_i(r^{\mathsf{shift}}_{i,j})$ $(\text{ If }r^{\mathsf{shift}}_{i,j}\in\evaldomain_i)$
+
+    Additionally, the honest prover defines the degree-corrected polynomial 
+    $\hat{f}_i \in \field^{<\degree}[X]$ as follows:
+    \[
+        \hat{f}_i 
+        :=\degcorr(\degree_i,r_{i}^{\mathsf{comb}},\hat{g}'_i,\degree_i-|\mathcal{G}_i|)
+    \]
+  The protocol proceeds to the next iteration with $\hat{f}_i$.
+  \end{enumerate}   
+\end{itemize}
 
