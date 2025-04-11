@@ -32,13 +32,8 @@ structure ReedSolomonCode (F : Type*) [Field F] [Fintype F] [DecidableEq F] wher
   code_def   : code = (polynomialsUpTo F d).image (polynomialEvalOn F L)
 
 
-
-namespace ReedSolomonCode
-
-def rate {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : ℚ :=
+def ReedSolomonCode.rate {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : ℚ :=
   (C.d : ℚ) / (C.L.card : ℚ)
 
 -- Ensures the Reed-Solomon code is nonempty
-theorem nonempty {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : C.code.Nonempty := sorry
-
-end ReedSolomonCode
+theorem ReedSolomonCode.nonempty {F : Type*} [Field F] [Fintype F] [DecidableEq F] (C : ReedSolomonCode F) : C.code.Nonempty := sorry

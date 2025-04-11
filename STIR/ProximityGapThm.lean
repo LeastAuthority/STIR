@@ -24,37 +24,18 @@ noncomputable def err'
 
 theorem proximity_gap
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F) :
-  ∀ δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate} →
-  ∀ (m : ℕ) (f : Fin m → (C.L → F)),
-  (PMF.uniformOfFintype F).toOuterMeasure { r |
-    fractionalHammingDistSet
-      (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
-      (C.code)
-      (C.nonempty)
-    ≤ δ} > err' F C.d C.rate δ m →
-    ∃ (S : Finset F),
-      S ⊆ C.L ∧
-      S.card ≥ (1 - δ) * C.L.card ∧
-      ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩:= by
-  sorry
-
-/-
-ALTERNATIVE VERSION. MIGHT BE LOGICALLY EQUIVALENT
-theorem proximity_gap
-  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (C : ReedSolomonCode F)
   (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate})
-  (m : ℕ) (f : Fin m → (C.L → F))
-  (hprob : (PMF.uniformOfFintype F).toOuterMeasure { r |
-    fractionalHammingDistSet
-      (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
-      (C.code)
-      (C.nonempty)
-    ≤ δ.val} > err' F C.d C.rate δ m) :
-    ∃ (S : Finset F),
+  (m : ℕ)
+  (f : Fin m → (C.L → F))
+  (h : (PMF.uniformOfFintype F).toOuterMeasure { r |
+          fractionalHammingDistSet
+            (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
+            (C.code)
+            (C.nonempty)
+          ≤ δ.val } > err' F C.d C.rate δ m) :
+  ∃ (S : Finset F),
     S ⊆ C.L ∧
     S.card ≥ (1 - δ.val) * C.L.card ∧
     ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩ := by
   sorry
--/
