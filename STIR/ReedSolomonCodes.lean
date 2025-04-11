@@ -1,3 +1,5 @@
+-- TODO: CHANGE ALL OCCURENCES OF ℚ to ℝ
+
 import STIR.FracHammingDist
 
 import Mathlib.FieldTheory.Finite.Basic
@@ -6,6 +8,7 @@ import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Data.Nat.Prime.Basic
+
 
 
 /- THIS IS A PLACEHOLDER STRUCTURE AND NOT A GOOD DEFINITION YET. WE NEED THE SET OF
@@ -38,19 +41,19 @@ namespace ReedSolomonCode
 variable {F : Type*} [Field F] [Fintype F] [DecidableEq F]
 
 -- Rate of Reed-Solomon code
-def rate (C : ReedSolomonCode F) : ℚ :=
-  (C.d : ℚ) / (C.L.card : ℚ)
+noncomputable def rate (C : ReedSolomonCode F) : ℝ  :=
+  (C.d : ℝ ) / (C.L.card : ℝ )
 
 -- Ensures the Reed-Solomon code is nonempty
 theorem nonempty (C : ReedSolomonCode F) : C.code.Nonempty := sorry
 
 -- List of codewords close to a given function `f` within fractional Hamming distance `δ`
-def List (C : ReedSolomonCode F) (f : C.L → F) (δ : ℚ) : Finset (C.L → F) :=
+noncomputable def List (C : ReedSolomonCode F) (f : C.L → F) (δ : ℝ) : Finset (C.L → F) :=
   C.code.filter (λ c ↦ fractionalHammingDist f c ≤ δ)
 
 -- The Reed-Solomon code `C` is `(δ, l)`-list decodable if every function `f` has fewer than `l` close codewords
 -- within fractional Hamming distance `δ`
-def listDecodable (C : ReedSolomonCode F) (δ : ℚ) (l : ℕ) : Prop :=
+def listDecodable (C : ReedSolomonCode F) (δ : ℝ) (l : ℝ) : Prop :=
   ∀ f : C.L → F, (C.List f δ).card < l
 
 end ReedSolomonCode
