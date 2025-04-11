@@ -23,5 +23,10 @@ Consider the following ingrediants:
     \item a field $\field$,
     \item an iteration count $M\in\N$,
     \item an initial degree parameter $\degree\in\N$ that is a power of $2$,
-    \item a folding parameters $k_0,\ldots,k_M\in\N$ that are powers of $2$ with $\degree\geq\prod_{min}^{max}$
+    \item a folding parameters $k_0,\ldots,k_M\in\N$ that are powers of $2$ with $\degree\geq\prod_{i}k_i$,
+    \item evaluation domains $\evaldomain_0,\ldots,\evaldomain_M\subseteq\field$ where $\evaldomain_i$ is a smooth coset of ${\field}^*$ with $|\evaldomain_i|>\frac{\degree}{\prod_{j<i}k^j}$
+    \item repetition parameters $t_0,\ldots,t_M\in\N$ where $t_i+1\leq\frac{\degree}{\prod_{j\leq i}k^j}$ for every $i\in\{0,\ldots,M-1\}$,
+    \item out of domain repetition parameter $s\in\N$.
 \end{itemize}
+For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$. The protocol proceeds as follows.
+
