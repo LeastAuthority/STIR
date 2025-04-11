@@ -29,9 +29,9 @@ Note that the evaluation domain $\evaldomain\subseteq\field$ is a non-empty set.
     For a Reed-Solomon code $\code := \rscode[\field,\evaldomain,\degree]$, parameter $\distance \in [0,1]$, 
     and a function $f:\evaldomain\to\field$, let $\listcode(f,\degree,\distance)$ denote the list 
     of codewords in $\code$ whose relative Hamming distance from $f$ is at most $\distance$.
-    We say that $\code$ is \emph{$(\distance,\degree)$-list decodable} if 
+    We say that $\code$ is \emph{$(\distance,l)$-list decodable} if 
     \[
-    \bigl|\listcode(f,\degree,\distance)\bigr| < |L|
+    \bigl|\listcode(f,\degree,\distance)\bigr| \leq l
     \quad
     \text{for every function } f.
     \]
