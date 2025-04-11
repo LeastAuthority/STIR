@@ -3,4 +3,4 @@
 import STIR.Basic
 import STIR.ReedSolomonCodes
 import STIR.FracHammingDist
-import STIR.proximity_gap_thm
+import STIR.ProximityGapThm
