@@ -1,0 +1,18 @@
+\section{STIR}
+\begin{theorem}[STIR Main Theorem]\label{thm:stir}
+    Consider the following ingrediants:
+    \begin{itemize}
+        \item A security parameter $\lambda\in\N$.
+        \item A Reed-Solomon code $\rscode[\field,\evaldomain,\degree]$ with $\rate:=\frac{\degree}{|\evaldomain|}$ where $\degree$ is a power of $2$, and $\evaldomain$ is a smooth domain.
+        \item A proximity parameter $\distance\in(0,1-1.05\cdot\sqrt{\rate})$.
+        \item A folding parameter $k\in\N$ that is power of $2$ with $k\geq 4$.
+    \end{itemize}
+If $|\field|=\Omega(\frac{\lambda\cdot2^\lambda\cdot\degree^2\cdot{|\evaldomain|}^2}{\log(1/\rate)})$, there is a public-coin IOPP for $\rscode[\field,\evaldomain,\degree]$ with the following parameters:
+\begin{itemize}
+    \item Round-by-round soundness error $2^{-\lambda}$.
+    \item Round complexity: $M:=O(\log_k{\degree})$.
+    \item Proof length: $|\evaldomain|+O_k(\log{\degree})$.
+    \item Query complexity to the input: $\frac{\lambda}{-\log{(1-\distance)}}$.
+    \item Query complexity to the proof strings: $O_k(\log{\degree}+\lambda\cdot\log{\Big(\frac{\log{\degree}}{\log{1/\rate}}\Big)})$.
+\end{itemize}
+\end{theorem}
