@@ -11,7 +11,7 @@ import Mathlib.Data.Real.Sqrt
 noncomputable def err'
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (d : ℕ)
-  (ρ : ℚ)
+  (ρ : ℝ )
   (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt ρ})
   (m : ℕ) : ENNReal :=
   ENNReal.ofReal (
