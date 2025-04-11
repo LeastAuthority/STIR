@@ -1,11 +1,11 @@
 /.lake
 
-/.aux
-/.out
-/.log
-/.pdf
-/.synctex.gz
-/.fls
-/.fdb_latexmk
+*.aux
+*.out
+*.log
+*.pdf
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 
 
