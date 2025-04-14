@@ -8,6 +8,9 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
+/- TODO: Make Everything ENNReal in the first place. Working with probabilities
+   ENNReal seems to be the proper type. We might want to discuss this with the
+   larger team at some point -/
 noncomputable def err'
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (d : ℕ)
