@@ -20,7 +20,7 @@ noncomputable def listDecodingCollisionProbability
       -- TODO: ∀ i : Fin s, Polynomial.eval (r i).val u = Polynomial.eval (r i).val u'
       ---         requires to get the assiciated polynomial of a ReedSolomon code
 
-lemma randomSampleCollisionBound_1
+lemma outOfDomainSmpl_1
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   (C : ReedSolomonCode F)
   (δ : ℝ)
@@ -29,7 +29,7 @@ lemma randomSampleCollisionBound_1
   listDecodingCollisionProbability C δ s C.domainComplementNonempty ≤
     (l.choose 2) * ((C.d - 1) / (Fintype.card F - C.L.card))^s := by sorry
 
-lemma randomSampleCollisionBound_2
+lemma outOfDomainSmpl_2
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   (C : ReedSolomonCode F)
   (δ : ℝ)
