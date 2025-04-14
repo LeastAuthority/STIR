@@ -1,6 +1,6 @@
 -- This module serves as the root of the `STIR` library.
 -- Import modules here that should be built as part of the library.
-import STIR.Basic
-import STIR.ReedSolomonCodes
-import STIR.FracHammingDist
-import STIR.ProximityGapThm
+import STIR.DefReedSolomonCodes
+import STIR.DefFracHammingDist
+import STIR.LemProximityGap
+import STIR.LemJohnsonBound
