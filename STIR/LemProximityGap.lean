@@ -1,5 +1,5 @@
-import STIR.ReedSolomonCodes
-import STIR.FracHammingDist
+import STIR.DefReedSolomonCodes
+import STIR.DefFracHammingDist
 
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
@@ -22,7 +22,7 @@ noncomputable def err'
       ((m - 1 : ℝ) * (d : ℝ)^2) / ((Fintype.card F) * (2 * min_val)^7)
   )
 
-theorem proximity_gap
+lemma proximityGap
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (C : ReedSolomonCode F)
   (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate})

@@ -1,6 +1,4 @@
--- TODO: CHANGE ALL OCCURENCES OF ℚ to ℝ
-
-import STIR.FracHammingDist
+import STIR.DefFracHammingDist
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
@@ -55,5 +53,11 @@ noncomputable def List (C : ReedSolomonCode F) (f : C.L → F) (δ : ℝ) : Fins
 -- within fractional Hamming distance `δ`
 def listDecodable (C : ReedSolomonCode F) (δ : ℝ) (l : ℝ) : Prop :=
   ∀ f : C.L → F, (C.List f δ).card < l
+
+-- Complement of the evaluation set `L` in `F` as a Finset
+noncomputable def domainComplement (C : ReedSolomonCode F) : Finset F :=
+  Finset.univ \ C.L
+
+lemma domainComplementNonempty (C : ReedSolomonCode F) : Nonempty C.domainComplement := by sorry
 
 end ReedSolomonCode
