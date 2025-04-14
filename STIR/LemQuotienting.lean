@@ -3,22 +3,22 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.LinearAlgebra.Lagrange
 import Mathlib.Algebra.Polynomial.Basic
 
+
+namespace quotient
+
 /- PolyAns S Ans is the unique interpolating polynomial of degree < |S|
    with PolyAns(s) = Ans(s) for each s ∈ S.
 
   Note: For S=∅ we get PolyAns(x) = 0 (the zero polynomial)
 -/
-
-namespace quotient
-
 noncomputable def AnsPoly
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (S : Finset F)
   (Ans : S → F) : Polynomial F :=
   Lagrange.interpolate S.attach (fun i => (i : F)) Ans
 
-/- PolyV is the vanishing polynomial on S, i.e. the unique polynomial of egree |S|+1
-   that is 0 at each s ∈ S and is nonzero, defined as ∏(s ∈ S) (X - s).
+/- VanishingPoly is the vanishing polynomial on S, i.e. the unique polynomial of degree |S|+1
+   that is 0 at each s ∈ S and is not the zero polynomial if S ≠ F, defined as ∏(s ∈ S) (X - s).
 -/
 noncomputable def VanishingPoly
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
