@@ -1,13 +1,12 @@
 import STIR.DefReedSolomonCodes
 
-
 import Mathlib.Data.Real.Sqrt
 
--- Formalization (without proof) of Johnson bound theorem for Reed-Solomon codes.
-lemma JohnsonBound {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F)
+lemma JohnsonBound
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d)
   (η : ℝ)
   (hη : 0 < η ∧ η < 1 - Real.sqrt C.rate) :
-
-  C.listDecodable (1 - Real.sqrt C.rate - η) (1 / (2 *  η * Real.sqrt C.rate)) := by
-sorry
+    C.listDecodable (1 - Real.sqrt C.rate - η) (1 / (2 *  η * Real.sqrt C.rate)) := by sorry

@@ -8,7 +8,9 @@ import Mathlib.Data.Fintype.Basic
 -- Formalizing the lemma statement about random samples for list decoding of Reed-Solomon codes.
 noncomputable def listDecodingCollisionProbability
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F)
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d)
   (δ : ℝ)
   (s : ℕ)
   (h_nonempty : Nonempty C.domainComplement) : ENNReal :=
@@ -22,18 +24,22 @@ noncomputable def listDecodingCollisionProbability
 
 lemma outOfDomainSmpl_1
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F)
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d)
   (δ : ℝ)
   (l s : ℕ)
   (h_decodable : C.listDecodable δ l) :
   listDecodingCollisionProbability C δ s C.domainComplementNonempty ≤
-    (l.choose 2) * ((C.d - 1) / (Fintype.card F - C.L.card))^s := by sorry
+    (l.choose 2) * ((d - 1) / (Fintype.card F - L.card))^s := by sorry
 
 lemma outOfDomainSmpl_2
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F)
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d)
   (δ : ℝ)
   (l s : ℕ)
   (h_decodable : C.listDecodable δ l) :
   listDecodingCollisionProbability C δ s C.domainComplementNonempty ≤
-    (l^2 / 2) * (C.d / (Fintype.card F - C.L.card))^s := by sorry
+    (l^2 / 2) * (d / (Fintype.card F - L.card))^s := by sorry
