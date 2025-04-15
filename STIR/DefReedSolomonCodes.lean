@@ -7,7 +7,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic.NormNum
 import Mathlib.Data.Nat.Prime.Basic
 
-
+/-TODO: Make C.d a positive natural number, because expressions like (1-C.d) occure
+  e.g. in the OutOfDomainSmpl lemma and for d=0 this makes no sense-/
 
 /- THIS IS A PLACEHOLDER STRUCTURE AND NOT A GOOD DEFINITION YET. WE NEED THE SET OF
    CODEWORDS TO BE FINITE AND IN ORDER FOR FINSET TO BE CONSTRUCTED WE NEED TO EXPLICITLY
