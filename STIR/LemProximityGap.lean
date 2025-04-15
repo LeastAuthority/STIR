@@ -26,19 +26,21 @@ noncomputable def err'
   )
 
 lemma proximityGap
-  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
-  (C : ReedSolomonCode F)
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d)
   (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate})
   (m : ℕ)
-  (f : Fin m → (C.L → F))
+  (f : Fin m → (L → F))
   (h : (PMF.uniformOfFintype F).toOuterMeasure { r |
           fractionalHammingDistSet
             (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
             (C.code)
             (C.nonempty)
-          ≤ δ.val } > err' F C.d C.rate δ m) :
-  ∃ (S : Finset F),
-    S ⊆ C.L ∧
-    S.card ≥ (1 - δ.val) * C.L.card ∧
-    ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ C.L, f i ⟨x, hx⟩ = u ⟨x, hx⟩ := by
+          ≤ δ.val } > err' F d C.rate δ m) :
+  ∃ (S : Finset F), -- better S Finset L ? then S subset L is automatic
+    S ⊆ L ∧
+    S.card ≥ (1 - δ.val) * L.card ∧
+    ∀ i : Fin m, ∃ u ∈ C.code, ∀ x ∈ S, ∀ hx : x ∈ L, f i ⟨x, hx⟩ = u ⟨x, hx⟩ := by
   sorry
