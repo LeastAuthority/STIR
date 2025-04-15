@@ -32,7 +32,7 @@ Above, $r_1:=1$, $r_i:=r^{i-1+\sum_{j<i}(\degree^*-\degree_i)}$ for $i>1$.
 %\lean{}
 %\leanok
 \uses{def:combine}
-    Given target degree $\degree\in\N$, shifting parameter $r$, function $f:\evaldomain\rightarrow\field$, and degree $0\leq\degree\leq\degree^*$, we define $\degcorr(\degree^*,r,f,\degree)$ as follows.
+    Given target degree $\degree^*\in\N$, shifting parameter $r\in\field$, function $f:\evaldomain\rightarrow\field$, and degree $0\leq\degree\leq\degree^*$, we define $\degcorr(\degree^*,r,f,\degree)$ as follows.
     \[
         \degcorr(\degree^*,r,f,\degree)(x):=f(x)\cdot\Bigg(\sum_{i=0}^{m}{(r\cdot x)}^l\Bigg)=
         \begin{cases}
