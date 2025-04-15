@@ -53,6 +53,19 @@ For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$.
     \]
   The protocol proceeds to the next iteration with $\hat{f}_i$.
   \end{enumerate}   
-  \item \textbf{Final round:} 
+  \item \textbf{Final round:} The prover sends $\degree_M$ coefficients of a polynomial $\hat{p}\in\field^{<\degree_M}[X]$. In the honest case, $\hat{p}:=\mathsf{Fold}(\hat{f}_M,k_M,r^{\mathsf{fold}_M})$.
+  \item \textbf{Verifier decision phase:} 
+  \begin{enumerate}
+    \item \textbf{Main loop:} For $i=1,\ldots,M:$
+    \begin{enumerate}
+        \item For every $j\in [t_{i-1}]$, query $\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ at $r^{\mathsf{shift}}_{i,j}$. This involves querying $f_{i-1}$ at all $k_{i-1}$ points $x\in{\evaldomain}_{i-1}$ with $x^{k_i-1}=r^{\mathsf{shift}}_{i,j}$.
+        \item Define $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$ and let $\mathsf{Ans}_i:\mathcal{G}_i\rightarrow\field$ be the function where $\mathsf{Ans}_i(r^{\mathsf{out}}_{i,j})=\beta_{i,j}$ and $\mathsf{Ans}_{i}(r^{\mathsf{shift}}_{i,j})=\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})(r^{\mathsf{shift}}_{i,j})$. Finally, (virtually) set $g'_i:=\mathsf{Quotient}(g_i,\mathcal{G}_i,\mathsf{Ans}_i,\mathsf{Fill}_i)$.
+        \item Define the virtual oracle $f_i:\evaldomain_i\rightarrow\field$ as follows:
+        \[
+            f_i:=\degcorr(\degree_i,r^{\mathsf{comb}}_i,g'_i,\degree_i-|\mathcal{G}_i|).
+        \]
+        Observe that a query $x$ to $f_i$
+    \end{enumerate}
+  \end{enumerate}
 \end{itemize}
 

@@ -14,7 +14,7 @@ In the following, we start by defining the \emph{quotient} of a univariate funct
 \begin{cases}
 \mathsf{Fill}(x)
 & \text{if } x \in S \\[6pt]
-\dfrac{f(x) - \hat{\mathsf{Ans}}(x)}{V_S(x)}
+\dfrac{f(x) - \hat{\mathsf{Ans}}(x)}{\hat{V}_S(x)}
 & \text{otherwise}
 \end{cases}
 \]
@@ -36,10 +36,10 @@ The following lemma, implicit in prior works, shows that if the function is ``qu
 
 \begin{lemma}\label{lemma:quotienting}
 %\lean{}
-%\leanok
-\uses{def:quotient}
+\leanok
+\uses{def:quotient,def:rscode,def:list_decodable}
     Let $f:\evaldomain\rightarrow\field$ be a function, $\degree\in\N$ be the degree parameter, $\distance\in(0,1)$
-    be a distance parameter, $S\subseteq\field$ be a set with $|S|<\degree$, and $\mathsf{Ans},\mathsf{Fill}:\evaldomain\rightarrow\field$ are functions. Suppose that for every $u\in\listcode(f,\degree,\distance)$ there exists $x\in S$ with $\hat{u}(x)\neq\mathsf{Ans}(x)$. Then 
+    be a distance parameter, $S\subseteq\field$ be a set with $|S|<\degree$, and $\mathsf{Ans},\mathsf{Fill}:S\rightarrow\field$ are functions. Suppose that for every $u\in\listcode(f,\degree,\distance)$ there exists $x\in S$ with $\hat{u}(x)\neq\mathsf{Ans}(x)$. Then 
     \[
             \Delta(\mathsf{Quotient}(f,S,\mathsf{Ans},\mathsf{Fill}),\rscode[\field,\evaldomain,\degree-|S|])+\frac{|T|}{|\evaldomain|}>\distance,
     \]
