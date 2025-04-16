@@ -6,3 +6,4 @@ import STIR.LemJohnsonBound
 import STIR.LemOutOfDomainSmpl
 import STIR.LemProximityGap
 import STIR.LemQuotienting
+import STIR.LemCombine
