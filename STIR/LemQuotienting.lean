@@ -44,6 +44,14 @@ noncomputable def Quotient
       else
         (f x - pAns.eval x.val) / pV.eval x.val
 
+noncomputable def polyQuotient
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {d : ℕ}
+  (f : Polynomial F) (hf : f.degree < d)
+  (S : Finset F) (hS : S.card < d) : Polynomial F :=
+    let pAns := AnsPoly F S (fun s => f.eval s)
+    let pV   := VanishingPoly F S
+    (f - pAns) / pV
 
 /-
   We define the set T(f,L,S,Ans) as the set of all points x ∈ L that lie in S such that
