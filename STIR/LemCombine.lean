@@ -15,9 +15,16 @@ Given
 we define combine L dstar r fs degs: L → F
 as follows
 --/
+noncomputable def ri
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {m : ℕ}     [Fintype (Fin m)]
+  (dstar : ℕ) (r : F) (degs : Fin m → ℕ)
+  (i : Fin m) : F :=
+    if i.val - 1 = 0 then (1:F)
+    else r^(i.val - 1 + (Finset.univ.filter (· < i)).sum fun j => dstar - degs j)
 
-noncomputable def Combine1
-(F : Type*) [Field F] [Fintype F] [DecidableEq F]
+noncomputable def CombineInterm
+{F : Type*} [Field F] [Fintype F] [DecidableEq F]
 (m : ℕ) [Fintype (Fin m)]
 (L : Finset F)
 (dstar : ℕ)
@@ -29,13 +36,11 @@ fun x =>
   (Finset.univ : Finset (Fin m)).sum
   fun i =>
   let di := degs i
-  let ri := if i.val = 1 then (1 : F)
-            else r ^ (i.val - 1 + (Finset.univ.filter (· < i)).sum fun j => dstar - degs j)
-  let geom := (Finset.range (dstar - di + 1)).sum fun l => (r * x.val) ^ l
-  ri * fs i x * geom
+  let geom := (Finset.range (dstar - di + 1)).sum fun l => (r * x.val)^l
+  ri dstar r degs i * fs i x * geom
 
-noncomputable def Combine2
-(F : Type*) [Field F] [Fintype F] [DecidableEq F]
+noncomputable def CombineFinal
+{F : Type*} [Field F] [Fintype F] [DecidableEq F]
 (m : ℕ) [Fintype (Fin m)]
 (L : Finset F)
 (dstar : ℕ)
@@ -46,14 +51,12 @@ L → F :=
 fun x =>
   let q := r * x.val
   (Finset.univ : Finset (Fin m)).sum fun i =>
-    let di := degs i
-    let ri := if i.val = 1 then (1 : F)
-              else r^((i.val - 1) + (Finset.univ.filter fun j => j.val < i.val).sum fun j => dstar - degs j)
-    let geom := if q = 1 then (dstar - di + 1 : F)
-                else (1 - q^(dstar - di + 1)) / (1 - q)
-    ri * fs i x * geom
+  let di := degs i
+  let geom := if q = 1 then (dstar - di + 1 : F)
+              else (1 - q^(dstar - di + 1)) / (1 - q)
+  ri dstar r degs i * fs i x * geom
 
-noncomputable def DegreeCorr1
+noncomputable def DegreeCorrInterm
 (F : Type*) [Field F] [Fintype F] [DecidableEq F]
 (L : Finset F)
 (dstar : ℕ) (r : F)
@@ -65,7 +68,7 @@ fun x =>
     (r * x.val) ^ l
   f x * geom
 
-noncomputable def DegreeCorr2
+noncomputable def DegreeCorrFinal
 (F : Type*) [Field F] [Fintype F] [DecidableEq F]
 (L : Finset F)
 (dstar : ℕ) (r : F)
