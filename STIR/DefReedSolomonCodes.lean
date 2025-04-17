@@ -19,15 +19,12 @@ noncomputable def polynomialsUpTo (F : Type*) [Field F] [Fintype F] [DecidableEq
     : Finset (Polynomial F) :=
   (Finset.univ : Finset (Fin d → F)).image (λ c => ∑ i : Fin d, Polynomial.monomial (i : ℕ) (c i))
 
-/-- Evaluate a polynomial p at each x ∈ L, returning a function `↑L → F`. -/
+/- Evaluate a polynomial p at each x ∈ L, returning a function `↑L → F`. -/
 def polynomialEvalOn (F : Type*) [Field F] [Fintype F] [DecidableEq F]
     (L : Finset F) (p : Polynomial F) : ↑L → F :=
   λ (x : ↑L) => p.eval x.val
 
-/-- All polynomial evaluations of degree < d on L, i.e. a Reed-Solomon code as a finset. -/
-noncomputable def reedSolomonCodeFinset (F : Type*) [Field F] [Fintype F] [DecidableEq F]
-    (L : Finset F) (hL : L.Nonempty) (d : ℕ) : Finset (↑L → F) :=
-  (polynomialsUpTo F d).image (polynomialEvalOn F L)
+
 
 /- The ReedSolomonCode structure, storing the code as `Finset (↑L → F)`. -/
 structure ReedSolomonCode
@@ -60,7 +57,7 @@ noncomputable def List (C : ReedSolomonCode F L d) (f : L → F) (δ : ℝ) : Fi
 def listDecodable (C : ReedSolomonCode F L d) (δ : ℝ) (l : ℝ) : Prop :=
   ∀ f : L → F, ((C.List f δ).card : ℝ) < l
 
--- Complement of the evaluation set `L` in `F` as a Finset
+-- Complement of the evaluation set `L` in `F` (F\L) as a Finset
 noncomputable def domainComplement (_C : ReedSolomonCode F L d) : Finset F :=
   Finset.univ \ L
 
