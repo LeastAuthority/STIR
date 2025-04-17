@@ -58,34 +58,7 @@ noncomputable def T
   (Ans : S → F) : Finset F :=
   (L.attach.filter (λ x ↦ (AnsPoly F S Ans).eval x.val ≠ f x)).image Subtype.val
 
-namespace quotient
-
-variable {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-variable {L : Finset F}
-variable {d : ℕ} {δ : ℝ}
-variable {S : Finset F} (hS_lt : S.card < d)
-variable {Ans Fill : S → F}
-variable (f : L → F)
-variable (C : ReedSolomonCode F L (d - S.card))
-
-/--
-Let `f : L → F` be a function, `d` a degree parameter, `δ` a distance parameter,
-`S ⊆ F` a set with `|S| < d`, and `Ans, Fill : S → F`. Suppose that
-for every `u ∈ C.List f δ` there exists `x ∈ S` with `u x ≠ Ans x`. Then
-```lean
-  (fractionalHammingDistSet (Quotient f S Ans Fill) C.code C.nonempty_L : ℝ)
-  + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ.
-```
--/
-lemma quotienting1 :
-  (∀ u, u ∈ C.List f δ → ∃ (x : ↑L ) (hx : x.val ∈ S), u x ≠ Ans ⟨x, hx⟩ ) →
-  (fractionalHammingDistSet (Quotient F L f S Ans Fill) C.code C.nonempty : ℝ)
-    + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ := by
-  sorry
-
-end quotient
-
-
+/- Quotienting Lemma-/
 lemma quotienting {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}
