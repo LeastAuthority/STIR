@@ -21,8 +21,7 @@ noncomputable def AnsPoly
   Lagrange.interpolate S.attach (fun i => (i : F)) Ans
 
 /- VanishingPoly is the vanishing polynomial on S, i.e. the unique polynomial of degree |S|+1
-   that is 0 at each s ∈ S and is not the zero polynomial if S ≠ F.
-   It is defined as ∏(s ∈ S) (X - s).
+   that is 0 at each s ∈ S and is not the zero polynomial. I.e V(X) = ∏(s ∈ S) (X - s).
 -/
 noncomputable def VanishingPoly
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
@@ -48,7 +47,7 @@ noncomputable def Quotient
 
 /-
   We define the set T(f,L,S,Ans) as the set of all points x ∈ L that lie in S such that
-  the AnsPoly disagrees with f. Formally: T := { x ∈ L | x.val ∈ S ∧ AnsPoly x ≠ f x }.
+  the AnsPoly disagrees with f. Formally: T := { x ∈ L | x ∈ S ∧ AnsPoly x ≠ f x }.
 -/
 noncomputable def T
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
@@ -59,7 +58,8 @@ noncomputable def T
   (L.attach.filter (λ x ↦ (AnsPoly F S Ans).eval x.val ≠ f x)).image Subtype.val
 
 /- Quotienting Lemma-/
-lemma quotienting {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+lemma quotienting
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}
   (S : Finset F) (hS_lt : S.card < d)

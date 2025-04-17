@@ -4,8 +4,7 @@ import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
 import Mathlib.Data.Fintype.Basic
 
-
--- Formalizing the lemma statement about random samples for list decoding of Reed-Solomon codes.
+/- Prob-/
 noncomputable def listDecodingCollisionProbability
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
@@ -14,13 +13,16 @@ noncomputable def listDecodingCollisionProbability
   (δ : ℝ)
   (s : ℕ)
   (h_nonempty : Nonempty C.domainComplement) : ENNReal :=
-  (PMF.uniformOfFintype (Fin s → (C.domainComplement))).toOuterMeasure {r |
-    ∃ u ∈ C.code, ∃ u' ∈ C.code,
-      u ≠ u' ∧ u ∈ C.List u δ ∧ u' ∈ C.List u δ ∧
-      ∀ i : Fin s, (r i).val  = (r i).val} -- TODO: We need the RSC polynomial
-
-      -- TODO: ∀ i : Fin s, Polynomial.eval (r i).val u = Polynomial.eval (r i).val u'
-      ---         requires to get the assiciated polynomial of a ReedSolomon code
+  (PMF.uniformOfFintype (Fin s → C.domainComplement)).toOuterMeasure { r |
+    ∃ (u u' : ↥C.code),
+      u.val ≠ u'.val ∧
+      -- both u and u' lie within δ of some target f
+      u.val ∈ C.List u.val δ ∧
+      u'.val ∈ C.List u.val δ ∧
+      -- their interpolating polynomials agree on each sampled r_i
+      ∀ i : Fin s,
+        (C.poly u).eval (r i).val = (C.poly u').eval (r i).val
+  }
 
 lemma outOfDomainSmpl_1
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
