@@ -58,38 +58,44 @@ noncomputable def T
   (Ans : S → F) : Finset F :=
   (L.attach.filter (λ x ↦ (AnsPoly F S Ans).eval x.val ≠ f x)).image Subtype.val
 
-/- NOT THE ACTUAL LEMMA; WORK IN PROGRESS-/
-/-
-lemma quotienting_lemma
-  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  {L : Finset F}
-  {d : ℕ}
-  (C : ReedSolomonCode F L d)
-  (f : L → F)
-  (degree : ℕ)
-  (distance : ℝ) (h_distance : 0 < distance ∧ distance < 1)
-  (S : Finset F) (hS : S.card < degree)
-  (Ans Fill : S → F)
-  (hC : d = degree)
-  (h_close : ∀ u ∈ C.List f distance, ∃ x ∈ S, polynomialEvalOn F L (AnsPoly F S Ans) x ≠ u x)
-  : fractionalHammingDistSet (Quotient F L f S Ans Fill) (C.code) (C.nonempty) +
-    ((T F L f S Ans).card : ℚ) / (L.card : ℚ) > distance :=
-sorry
+namespace quotient
 
-/-NOT THE ACTUAL LEMMA. WORK IN PROGRESS-/
-lemma quotienting_lemma1
-  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+variable {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+variable {L : Finset F}
+variable {d : ℕ} {δ : ℝ}
+variable {S : Finset F} (hS_lt : S.card < d)
+variable {Ans Fill : S → F}
+variable (f : L → F)
+variable (C : ReedSolomonCode F L (d - S.card))
+
+/--
+Let `f : L → F` be a function, `d` a degree parameter, `δ` a distance parameter,
+`S ⊆ F` a set with `|S| < d`, and `Ans, Fill : S → F`. Suppose that
+for every `u ∈ C.List f δ` there exists `x ∈ S` with `u x ≠ Ans x`. Then
+```lean
+  (fractionalHammingDistSet (Quotient f S Ans Fill) C.code C.nonempty_L : ℝ)
+  + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ.
+```
+-/
+lemma quotienting1 :
+  (∀ u, u ∈ C.List f δ → ∃ (x : ↑L ) (hx : x.val ∈ S), u x ≠ Ans ⟨x, hx⟩ ) →
+  (fractionalHammingDistSet (Quotient F L f S Ans Fill) C.code C.nonempty : ℝ)
+    + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ := by
+  sorry
+
+end quotient
+
+
+lemma quotienting {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}
-  (C : ReedSolomonCode F L d)
+  (S : Finset F) (hS_lt : S.card < d)
+  (C1 : ReedSolomonCode F L d)
+  (C2 : ReedSolomonCode F L (d - S.card))
   (f : L → F)
-  (d : ℕ)
-  (δ : ℝ) (hδ : 0 < δ ∧ δ < 1)
-  (S : Finset F) (hS : S.card < d)
   (Ans Fill : S → F)
-  (h_close : ∀ u ∈ C.List f δ, ∃ x ∈ S, polynomialEvalOn F L (AnsPoly F S Ans) x ≠ u x)
-  : fractionalHammingDistSet (Quotient F L f S Ans Fill) (C.code) (C.nonempty) +
-    ((T F L f S Ans).card : ℚ) / (L.card : ℚ) > δ :=
-sorry
--/
-end quotient
+  (δ : ℝ) (hδ : 0 < δ ∧ δ < 1)
+  (h : ∀ u, u ∈ C1.List f δ → ∃ (x : ↑L) (hx : x.val ∈ S), u x ≠ Ans ⟨x.val, hx⟩) :
+  (fractionalHammingDistSet (Quotient F L f S Ans Fill) C2.code C2.nonempty : ℝ)
+    + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ := by
+  sorry
