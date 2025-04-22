@@ -15,7 +15,9 @@ lemma proximityGap
   {L : Finset F}
   {d : ℕ}
   (C : ReedSolomonCode F L d)
-  (δ : {x : ℝ // 0 < x ∧ x < 1 - Bstar C})
+  (Rnge  : ℝ)
+  (hRnge : Rnge = 1 - Bstar C)
+  (δ : {x : ℝ // 0 < x ∧ x < Rnge})
   (m : ℕ)
   (f : Fin m → (L → F))
   (h : (PMF.uniformOfFintype F).toOuterMeasure { r |
@@ -23,7 +25,7 @@ lemma proximityGap
             (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
             (C.code)
             (C.nonempty)
-          ≤ δ.val } > err' C δ m) :
+          ≤ δ.val } > err' C Rnge δ m) :
   ∃ (S : Finset F), -- better S Finset L ? then S subset L is automatic
     S ⊆ L ∧
     S.card ≥ (1 - δ.val) * L.card ∧

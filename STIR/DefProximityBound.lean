@@ -18,12 +18,13 @@ noncomputable def err'
   {L : Finset F}
   {d : ℕ}
   (C : ReedSolomonCode F L d)
-  (δ : {x : ℝ // 0 < x ∧ x < 1 - Bstar C})
+  (Rnge : ℝ)
+  (δ : {x : ℝ // 0 < x ∧ x < Rnge})
   (m : ℕ) : ENNReal :=
   ENNReal.ofReal (
     if δ.val ≤ (1 - C.rate) / 2 then
       ((m - 1 : ℝ) * d) / (C.rate * (Fintype.card F))
     else
-      let min_val := min (1 - Bstar C - δ.val) (C.rate / 20)
+      let min_val := min (Rnge - δ.val) (C.rate / 20)
       ((m - 1 : ℝ) * (d : ℝ)^2) / ((Fintype.card F) * (2 * min_val)^7)
   )
