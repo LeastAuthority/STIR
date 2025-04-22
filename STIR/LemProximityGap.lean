@@ -1,4 +1,4 @@
-import STIR.defProximityBound
+import STIR.DefProximityBound
 import STIR.DefReedSolomonCodes
 import STIR.DefFracHammingDist
 
