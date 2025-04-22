@@ -1,0 +1,58 @@
+\begin{definition}\label{def:iopp}
+    A \emph{$k$‑round public‑coin interactive‑oracle proof of proximity
+    (IOPP)} for a ternary relation $\mathcal R = \{(x,y,w)\}$ is an
+    interactive protocol between a prover $\mathsf P$ and a verifier
+    $\mathsf V$ defined as follows.
+    
+    \begin{itemize}
+      \item The prover receives $(x,y,w)$, while the verifier receives $x$
+            and oracle access to $y$.
+    
+      \item For each round $i\in[k]$ the verifier sends a uniformly random
+            message $\alpha_i$ to the prover, who responds with a proof
+            string $\pi_i$.
+    
+      \item After $k$ rounds, the verifier may query $y$ and the proof
+            strings $\pi_1,\dots,\pi_k$ and finally outputs a decision bit.
+    \end{itemize}
+    
+    Formally, let $\IOP=(\mathsf P,\mathsf V)$ where $\mathsf P$ is an
+    interactive algorithm and $\mathsf V$ is an interactive‑oracle algorithm.
+    The protocol has \textbf{perfect completeness} and \textbf{soundness
+    error} $\beta$ if the following conditions hold.
+    
+    \paragraph{Perfect completeness.}
+    For every $(x,y,w)\in\mathcal R$,
+    \[
+      \Pr_{\alpha_1,\ldots,\alpha_k}\!\Bigl[
+        \mathsf V^{y,\pi_1,\ldots,\pi_k}(x,\alpha_1,\ldots,\alpha_k)=1
+        \;\Big|\;
+        \pi_1\leftarrow\mathsf P(x,y,w),\;
+        \dots,\;
+        \pi_k\leftarrow\mathsf P(x,y,w,\alpha_1,\ldots,\alpha_k)
+      \Bigr]=1.
+    \]
+    
+    \paragraph{Soundness.}
+    For every $(x,y)\notin L(\mathcal R)$ and every (unbounded) malicious
+    prover $\widetilde{\mathsf P}$,
+    \[
+      \Pr_{\alpha_1,\ldots,\alpha_k}\!\Bigl[
+        \mathsf V^{y,\pi_1,\ldots,\pi_k}(x,\alpha_1,\ldots,\alpha_k)=1
+        \;\Big|\;
+        \pi_1\leftarrow\widetilde{\mathsf P}(\alpha_1),\;
+        \dots,\;
+        \pi_k\leftarrow\widetilde{\mathsf P}
+              (x,y,\alpha_1,\ldots,\alpha_k)
+      \Bigr]\le \beta(x,y).
+    \]
+    
+    When the soundness error depends only on the input lengths and on the
+    proximity $\delta$ of $y$ to the language
+    \[
+      L_x \;:=\; \{\,y' \mid \exists w,\,(x,y',w)\in\mathcal R\},
+    \]
+    we write $\beta\bigl(|x|,|y|,\delta\bigr)$, or simply
+    $\beta(\delta)$ when $|x|$ and $|y|$ are clear from context.
+    \end{definition}
+    
