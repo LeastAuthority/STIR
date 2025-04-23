@@ -1,3 +1,10 @@
+import STIR.DefProximityBound
+import STIR.DefFracHammingDist
+import STIR.DefReedSolomonCodes
+import STIR.LemProximityGap
+
+import Mathlib.Probability.ProbabilityMassFunction.Basic
+import Mathlib.Probability.Distributions.Uniform
 import Mathlib.Data.Finset.Basic
 import Mathlib.FieldTheory.Finite.Basic
 
@@ -57,7 +64,7 @@ fun x =>
   ri dstar r degs i * fs i x * geom
 
 noncomputable def DegreeCorrInterm
-(F : Type*) [Field F] [Fintype F] [DecidableEq F]
+{F : Type*} [Field F] [Fintype F] [DecidableEq F]
 (L : Finset F)
 (dstar : ℕ) (r : F)
 (f : L → F)
@@ -69,7 +76,7 @@ fun x =>
   f x * geom
 
 noncomputable def DegreeCorrFinal
-(F : Type*) [Field F] [Fintype F] [DecidableEq F]
+{F : Type*} [Field F] [Fintype F] [DecidableEq F]
 (L : Finset F)
 (dstar : ℕ) (r : F)
 (f : L → F)
@@ -80,5 +87,43 @@ fun x =>
   let geom := if q = 1 then (dstar - d + 1 : F)
               else (1 - q ^ exp) / (1 - q)
 f x * geom
+
+/--
+If the random shift `r` causes the combined function to be far from
+the degree-`d⋆` RS code with probability exceeding `err*`, then there
+is a large subset `S ⊆ L` on which each `fᵢ` agrees with a degree-`dᵢ`
+Reed–Solomon codeword.
+-/
+lemma combine
+  (F : Type*) [Field F] [Fintype F] [DecidableEq F]
+  (L : Finset F)
+  (d : ℕ)
+  (C : ReedSolomonCode F L d)
+  (Rnge  : ℝ)
+  (hRnge : Rnge = min
+      (1 - Bstar C)               -- δ ≤ 1 - 𝔅*(ρ)
+      (1 - C.rate - 1 / L.card))  -- δ ≤ 1 - ρ - 1/|L|
+  (m : ℕ) [Fintype (Fin m)]
+  (dstar : ℕ)
+  (Cstar : ReedSolomonCode F L dstar)
+  (r : F)
+  (fs   : Fin m → L → F)
+  (degs : Fin m → ℕ)
+  (δ    : {δ // 0 < δ ∧ δ < Rnge})
+  (hProb : (PMF.uniformOfFintype F).toOuterMeasure { r |
+          fractionalHammingDistSet
+            (CombineFinal m L dstar r fs degs)
+            (Cstar.code)
+            (Cstar.nonempty)
+          ≤ δ.val} > err' Cstar Rnge δ (m * (dstar + 1) - ((Finset.univ : Finset (Fin m)).sum degs)))
+  (RSi : (i: Fin m) → ReedSolomonCode F L (degs i)) :
+∃ S : Finset F,
+  S ⊆ L ∧
+  S.card ≥ (1 - δ.val) * L.card ∧
+  ∀ i : Fin m, ∃ u : (L → F),
+  u ∈ (RSi i).code ∧
+  ∀ x : L, x.val ∈ S → fs i x = u x :=
+  by
+   sorry
 
 end combine
