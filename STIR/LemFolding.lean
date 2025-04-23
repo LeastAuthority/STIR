@@ -1,4 +1,5 @@
 import STIR.DefReedSolomonCodes
+import STIR.DefProximityBound
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
@@ -67,19 +68,28 @@ noncomputable def fold
   (k : ℕ)
   (α : F) : powDomain k L → F := by sorry -- We should implement this at some point. Not a proof
 
-lemma folding
+noncomputable def foldingRange
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}
+  (C : ReedSolomonCode F L d)
+  (f : L → F) : ℝ :=
+   min (fractionalHammingDistSet f (C.code) (C.nonempty)) (1 - Bstar C.rate)
+
+lemma folding
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {L : Finset F}
+  {d : ℕ} -- Can lean really deduce it?
   (f : L → F)
   (k : ℕ) -- We might need an assumption that k is a factor of d
-  (C : ReedSolomonCode F (powDomain k L) (d/k))
-  (δ : {x : ℝ // 0 < x ∧ x < 1 - Real.sqrt C.rate}) : -- WRONG, NEEDS AN UPDATE
+  (C1 : ReedSolomonCode F L d)
+  (C2 : ReedSolomonCode F (powDomain k L) (d/k))
+  (δ : {x : ℝ // 0 < x ∧ x < foldingRange C1 f}) :
     (PMF.uniformOfFintype F).toOuterMeasure { r |
             fractionalHammingDistSet
               (fold f k r)
-              (C.code)
-              (C.nonempty)
-            ≤ δ.val } > 0 -- TODO PROPER ERR FUNCTION
+              (C2.code)
+              (C2.nonempty)
+            ≤ δ.val } > err' F (d/k) C1.rate δ k -- Double check if this really is C1.rate not C2.rate
 
    := by sorry

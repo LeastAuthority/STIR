@@ -1,6 +1,6 @@
-import STIR.DefProximityBound
 import STIR.DefReedSolomonCodes
 import STIR.DefFracHammingDist
+import STIR.DefProximityBound
 
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
@@ -15,9 +15,7 @@ lemma proximityGap
   {L : Finset F}
   {d : ℕ}
   (C : ReedSolomonCode F L d)
-  (Rnge  : ℝ)
-  (hRnge : Rnge = 1 - Bstar C)
-  (δ : {x : ℝ // 0 < x ∧ x < Rnge})
+  (δ : {x : ℝ // 0 < x ∧ x < 1 - Bstar C.rate})
   (m : ℕ)
   (f : Fin m → (L → F))
   (h : (PMF.uniformOfFintype F).toOuterMeasure { r |
@@ -25,7 +23,7 @@ lemma proximityGap
             (λ x ↦ ∑ j : Fin m, (r^(j : ℕ)) • (f j x))
             (C.code)
             (C.nonempty)
-          ≤ δ.val } > err' C Rnge δ m) :
+          ≤ δ.val } > err' F d C.rate δ m) :
   ∃ (S : Finset F), -- better S Finset L ? then S subset L is automatic
     S ⊆ L ∧
     S.card ≥ (1 - δ.val) * L.card ∧

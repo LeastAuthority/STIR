@@ -27,7 +27,7 @@ noncomputable def ri
   {m : ℕ}     [Fintype (Fin m)]
   (dstar : ℕ) (r : F) (degs : Fin m → ℕ)
   (i : Fin m) : F :=
-    if i.val - 1 = 0 then (1:F)
+    if i.val - 1 = 0 then (1:F) -- This might be wrong as the range is 0 ... m-1, not 1 ... m
     else r^(i.val - 1 + (Finset.univ.filter (· < i)).sum fun j => dstar - degs j)
 
 noncomputable def CombineInterm
@@ -88,6 +88,13 @@ fun x =>
               else (1 - q ^ exp) / (1 - q)
 f x * geom
 
+noncomputable def combineRange
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {L : Finset F}
+  {d : ℕ}
+  (C : ReedSolomonCode F L d): ℝ :=
+   min (1- Bstar C.rate) (1- C.rate - 1/ Fintype.card F)
+
 /--
 If the random shift `r` causes the combined function to be far from
 the degree-`d⋆` RS code with probability exceeding `err*`, then there
@@ -99,23 +106,19 @@ lemma combine
   (L : Finset F)
   (d : ℕ)
   (C : ReedSolomonCode F L d)
-  (Rnge  : ℝ)
-  (hRnge : Rnge = min
-      (1 - Bstar C)               -- δ ≤ 1 - 𝔅*(ρ)
-      (1 - C.rate - 1 / L.card))  -- δ ≤ 1 - ρ - 1/|L|
   (m : ℕ) [Fintype (Fin m)]
   (dstar : ℕ)
   (Cstar : ReedSolomonCode F L dstar)
   (r : F)
   (fs   : Fin m → L → F)
   (degs : Fin m → ℕ)
-  (δ    : {δ // 0 < δ ∧ δ < Rnge})
+  (δ    : {δ // 0 < δ ∧ δ < combineRange Cstar })
   (hProb : (PMF.uniformOfFintype F).toOuterMeasure { r |
           fractionalHammingDistSet
             (CombineFinal m L dstar r fs degs)
             (Cstar.code)
             (Cstar.nonempty)
-          ≤ δ.val} > err' Cstar Rnge δ (m * (dstar + 1) - ((Finset.univ : Finset (Fin m)).sum degs)))
+          ≤ δ.val} > err' F d C.rate δ (m * (dstar + 1) - ((Finset.univ : Finset (Fin m)).sum degs)))
   (RSi : (i: Fin m) → ReedSolomonCode F L (degs i)) :
 ∃ S : Finset F,
   S ⊆ L ∧
