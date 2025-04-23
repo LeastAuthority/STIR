@@ -1,9 +1,12 @@
 \chapter{Preliminaries}
 
-%\begin{definition}[Error-Correcting Code]\label{def:eccode}
-%    An \emph{error-correcting code} of length \(n\) over an alphabet \(\Sigma\) is a subset \(\code \subseteq \Sigma^n\). The code \(\code\) is called a \emph{linear code} if
-%    \(\Sigma = \field\) is a finite field and \(\code\) is a subspace of \({\field}^n\).
-%\end{definition}
+\input{chapter/iopp}
+\begin{definition}
+    Let $k\in \N$ be an integer, $\field$ be a finite field and $\evaldomain \subset \field$ be a subset of $\field$. Then 
+    \[
+    \evaldomain^k := \{x^k \text{ s.t. } x \in \evaldomain\}
+    \]   
+\end{definition}
 
 \begin{definition}[Reed-Solomon Code]\label{def:rscode}
 \lean{polynomialsUpTo,polynomialEvalOn,ReedSolomonCode}
