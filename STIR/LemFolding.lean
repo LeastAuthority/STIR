@@ -42,7 +42,21 @@ lemma exists_unique_fold
       (MvPolynomial.degreeOf 1 Q < Polynomial.natDegree q) ∧
       -- point‑wise equality on F: f(z) = Q(q(z), z)
       (∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z):=
+  /- The construction proof is not in STIR but its proposition 6.3 in
+      https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf ...
+      Unfortunately 𝔽[X,Y] is not an Euclidean Domain, so this proof might need some work
+      to show existence of polynomials Q and Q' such that P = Q'*(y- q) + Q ...
+      (It can be done fixing an order though)
+
+      In particular we don't have an equivalent to
+
+      EuclideanDomain.quotient_mul_add_remainder_eq (a b : R) :
+        b * EuclideanDomain.quotient a b + EuclideanDomain.remainder a b = a
+
+      so we can not construct existence trivially
+      -/
   sorry
+
 
 lemma degX_lt_of_deg_lt
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
