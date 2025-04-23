@@ -1,5 +1,6 @@
 import STIR.DefReedSolomonCodes
 import STIR.DefProximityBound
+import STIR.DefSmoothDom
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
@@ -54,19 +55,13 @@ lemma degX_lt_of_deg_lt
   (heq : ∀ z : F, f.eval z = evalBivar Q (q.eval z) z) : MvPolynomial.degreeOf 0 Q < t :=
   sorry
 
-/- L^k := {x^k | x ∈ L} -/
-/- TODO PUT IT SOMEWHERE ELSE LATER-/
-noncomputable def powDomain
-  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (k : ℕ)
-  (L : Finset F) : Finset F := L.image fun x : F => x ^ k
 
 noncomputable def fold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   (f : L → F)
   (k : ℕ)
-  (α : F) : powDomain k L → F := by sorry -- We should implement this at some point. Not a proof
+  (α : F) : powDom L k → F := by sorry -- We should implement this at some point. Not a proof
 
 noncomputable def foldingRange
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
@@ -83,7 +78,7 @@ lemma folding
   (f : L → F)
   (k : ℕ) -- We might need an assumption that k is a factor of d
   (C1 : ReedSolomonCode F L d)
-  (C2 : ReedSolomonCode F (powDomain k L) (d/k))
+  (C2 : ReedSolomonCode F (powDom k L) (d/k))
   (δ : {x : ℝ // 0 < x ∧ x < foldingRange C1 f}) :
     (PMF.uniformOfFintype F).toOuterMeasure { r |
             fractionalHammingDistSet
