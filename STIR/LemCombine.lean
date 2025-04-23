@@ -27,7 +27,7 @@ noncomputable def ri
   {m : ℕ}     [Fintype (Fin m)]
   (dstar : ℕ) (r : F) (degs : Fin m → ℕ)
   (i : Fin m) : F :=
-    if i.val - 1 = 0 then (1:F)
+    if i.val - 1 = 0 then (1:F) -- This might be wrong as the range is 0 ... m-1, not 1 ... m
     else r^(i.val - 1 + (Finset.univ.filter (· < i)).sum fun j => dstar - degs j)
 
 noncomputable def CombineInterm
