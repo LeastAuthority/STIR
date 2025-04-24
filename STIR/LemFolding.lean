@@ -95,12 +95,27 @@ noncomputable def polyFold
       (fun i : Fin 2 => if i = 0 then Polynomial.X else Polynomial.C r)
       Q
 
+noncomputable def xPoly
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  (L : Finset F)
+  (f : L → F)
+  (k : ℕ)
+  (x : powDom L k) : Polynomial F :=
+    let S := powFiber L k x
+    Lagrange.interpolate
+      S.attach
+      Subtype.val
+      fun i =>
+        let hL : i.1 ∈ L := (Finset.mem_filter.1 i.2).1
+        f ⟨i.1, hL⟩
+
 noncomputable def fold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   (f : L → F)
   (k : ℕ)
-  (α : F) : powDom L k → F := by sorry -- We should implement this at some point. Not a proof
+  (α : F) : powDom L k → F :=
+    fun x => (xPoly L f k x).eval α
 
 noncomputable def foldingRange
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]

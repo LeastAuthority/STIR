@@ -26,3 +26,10 @@ noncomputable def powDom
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   (L : Finset F)
   (k : ℕ) : Finset F := L.image fun x : F => x ^ k
+
+noncomputable def powFiber
+  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+  (L : Finset F)
+  (k : ℕ)
+  (x : powDom L k) : Finset F :=
+    L.filter (fun y => y ^ k = x)
