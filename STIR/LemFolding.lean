@@ -80,8 +80,9 @@ lemma degX_lt_of_deg_lt
 
 noncomputable def polyFold
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (f : Polynomial F) (k : ℕ) (r : F)
-  (hk0 : 0 < k) (hkfin : k < Fintype.card F) : Polynomial F :=
+  (f : Polynomial F)
+  (k : ℕ) (hk0 : 0 < k) (hkfin : k < Fintype.card F)
+  (r : F): Polynomial F :=
     let q : Polynomial F := Polynomial.X ^ k
     let hdeg_q_min : q.natDegree > 0 := sorry
     let hdeg_q_max : q.natDegree < Fintype.card F := sorry
@@ -89,10 +90,10 @@ noncomputable def polyFold
     let Q : MvPolynomial (Fin 2) F :=
     (Classical.choose (existsUniqueFold q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
   -- now freeze Y ↦ r, X ↦ X, using the constant‐polynomial ring‐hom `Polynomial.C`
-  MvPolynomial.eval₂Hom
-    (Polynomial.C : F →+* Polynomial F)
-    (fun i : Fin 2 => if i = 0 then Polynomial.X else Polynomial.C r)
-    Q
+    MvPolynomial.eval₂Hom
+      (Polynomial.C : F →+* Polynomial F)
+      (fun i : Fin 2 => if i = 0 then Polynomial.X else Polynomial.C r)
+      Q
 
 noncomputable def fold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
