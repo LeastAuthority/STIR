@@ -78,6 +78,8 @@ Below is an example illustrating the usage of these macros. This example assumes
   None of the primes \(p_i\) divides \(N\) (as each leaves a remainder of 1), which leads to a contradiction. Thus, there must be infinitely many primes.
 \end{proof}
 
+```
+
 ---
 
 ## License
