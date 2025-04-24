@@ -1,3 +1,9 @@
+/-
+Copyright (c) 2025 ZKLib Contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Least Authority
+-/
+
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
 import Mathlib.Algebra.Group.Subgroup.Basic
