@@ -18,26 +18,33 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.LinearAlgebra.Lagrange
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees
+import Mathlib.RingTheory.MvPolynomial.Groebner
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
+import Mathlib.Data.Nat.Basic
 
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
 
-/-The STIR paper assumes that the polynomials f(.) and Q(q(.),.) are fully determined by their
-  evaluations on F, which is not necessarily true for arbitrary polynomials of degrees larger then
-  |F|. So we include an assumption in what follows that q has degree < |F| fom which the uniqueness
-  of f and Q can be derived -/
+/-- In order to define polynomial division on the non-Euclidean Ring 𝔽[z,y] we need
+    to fix an order on monomials. Using the usual lexicographic order x₀ > x₁ is equal to
+    proposition 6.3 in https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf
+    under the substitution z = x₀ and y = x₁ -/
+noncomputable def m : MonomialOrder (Fin 2) := MonomialOrder.lex
 
 /-- Helper For Readability: Evaluate a bivariate polynomial Q at (a, b) ∈ F×F -/
 def evalBivar
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   (Q : MvPolynomial (Fin 2) F) (a b : F) : F := MvPolynomial.eval (Fin.cases a (fun _ ↦ b)) Q
 
-lemma exists_unique_fold
+/-The STIR paper assumes that the polynomials f(.) and Q(q(.),.) are fully determined by their
+  evaluations on F, which is not necessarily true for arbitrary polynomials of degrees larger then
+  |F|. So we include an assumption in what follows that q has degree < |F| fom which the uniqueness
+  of f and Q can be derived from their evaluation on F -/
+lemma existsUniqueFold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeq_q_max : q.natDegree < Fintype.card F)
+  (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeg_q_max : q.natDegree < Fintype.card F)
   (f : Polynomial F) :
     -- Q ∈ 𝔽[X,Y]
     ∃! Q : MvPolynomial (Fin 2) F,
@@ -52,29 +59,40 @@ lemma exists_unique_fold
       https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf ...
       Unfortunately 𝔽[X,Y] is not an Euclidean Domain, so this proof might need some work
       to show existence of polynomials Q and Q' such that P = Q'*(y- q) + Q ...
-      (It can be done fixing an order though)
+      Using MonomialOrder.div from Mathlib.RingTheory.MvPolynomial.Groebner should work
 
-      In particular we don't have an equivalent to
-
-      EuclideanDomain.quotient_mul_add_remainder_eq (a b : R) :
-        b * EuclideanDomain.quotient a b + EuclideanDomain.remainder a b = a
-
-      so we can not construct existence trivially
       -/
   sorry
 
-
 lemma degX_lt_of_deg_lt
-  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   (t : ℕ)
-  (q : Polynomial F) (hdeg_q : q.natDegree ≠ 0)
-  (f : Polynomial F) (hdeg_f : f.natDegree < t * q.natDegree)
+  (q : Polynomial F)
+  (hdeg_q_min : q.natDegree > 0)
+  (hdeg_q_max : q.natDegree < Fintype.card F)
+  (f : Polynomial F)
+  (hdeg_f : f.natDegree < t * q.natDegree)
   (Q : MvPolynomial (Fin 2) F)
-  (hX : MvPolynomial.degreeOf 0 Q = f.natDegree / q.natDegree)
-  (hY : MvPolynomial.degreeOf 1 Q < q.natDegree)
-  (heq : ∀ z : F, f.eval z = evalBivar Q (q.eval z) z) : MvPolynomial.degreeOf 0 Q < t :=
-  sorry
+  (hdegx : MvPolynomial.degreeOf 0 Q = f.natDegree / q.natDegree)
+  (hdegy : MvPolynomial.degreeOf 1 Q < q.natDegree)
+  (heval : ∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z) :
+    MvPolynomial.degreeOf 0 Q < t := by sorry
 
+noncomputable def polyFold
+  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  (f : Polynomial F) (k : ℕ) (r : F)
+  (hk0 : 0 < k) (hkfin : k < Fintype.card F) : Polynomial F :=
+    let q : Polynomial F := Polynomial.X ^ k
+    let hdeg_q_min : q.natDegree > 0 := sorry
+    let hdeg_q_max : q.natDegree < Fintype.card F := sorry
+  -- choose the unique bivariate lift Q
+    let Q : MvPolynomial (Fin 2) F :=
+    (Classical.choose (existsUniqueFold q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
+  -- now freeze Y ↦ r, X ↦ X, using the constant‐polynomial ring‐hom `Polynomial.C`
+  MvPolynomial.eval₂Hom
+    (Polynomial.C : F →+* Polynomial F)
+    (fun i : Fin 2 => if i = 0 then Polynomial.X else Polynomial.C r)
+    Q
 
 noncomputable def fold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
