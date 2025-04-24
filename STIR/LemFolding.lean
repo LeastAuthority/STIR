@@ -26,13 +26,6 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
-
-/-- In order to define polynomial division on the non-Euclidean Ring 𝔽[z,y] we need
-    to fix an order on monomials. Using the usual lexicographic order x₀ > x₁ is equal to
-    proposition 6.3 in https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf
-    under the substitution z = x₀ and y = x₁ -/
-noncomputable def m : MonomialOrder (Fin 2) := MonomialOrder.lex
-
 /-- Helper For Readability: Evaluate a bivariate polynomial Q at (a, b) ∈ F×F -/
 def evalBivar
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
@@ -54,29 +47,36 @@ lemma existsUniqueFold
       -- deg_y(Q) < deg (q)
       (MvPolynomial.degreeOf 1 Q < Polynomial.natDegree q) ∧
       -- point‑wise equality on F: f(z) = Q(q(z), z)
-      (∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z):=
-  /- The construction proof is not in STIR but its proposition 6.3 in
+      (∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z) ∧
+  (∀ t : ℕ, f.natDegree < t * q.natDegree → MvPolynomial.degreeOf 0 Q < t):=
+
+  /- The construction proof of Q is not in STIR but its proposition 6.3 in
       https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf ...
       Unfortunately 𝔽[X,Y] is not an Euclidean Domain, so this proof might need some work
       to show existence of polynomials Q and Q' such that P = Q'*(y- q) + Q ...
+
       Using MonomialOrder.div from Mathlib.RingTheory.MvPolynomial.Groebner should work
 
-      -/
+      In order to define polynomial division on the non-Euclidean Ring 𝔽[z,y] we need
+      to fix an order on monomials. Using the usual lexicographic order x₀ > x₁ is equal to
+      proposition 6.3 in https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf
+      under the substitution z = x₀ and y = x₁
+
+      noncomputable def m : MonomialOrder (Fin 2) := MonomialOrder.lex is how you define
+      the order.
+  -/
   sorry
 
-lemma degX_lt_of_deg_lt
-  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
-  (t : ℕ)
-  (q : Polynomial F)
-  (hdeg_q_min : q.natDegree > 0)
-  (hdeg_q_max : q.natDegree < Fintype.card F)
-  (f : Polynomial F)
-  (hdeg_f : f.natDegree < t * q.natDegree)
+lemma foldDegreeBound
+  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+  (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeg_q_max : q.natDegree < Fintype.card F)
+  {t : ℕ}
   (Q : MvPolynomial (Fin 2) F)
-  (hdegx : MvPolynomial.degreeOf 0 Q = f.natDegree / q.natDegree)
-  (hdegy : MvPolynomial.degreeOf 1 Q < q.natDegree)
-  (heval : ∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z) :
-    MvPolynomial.degreeOf 0 Q < t := by sorry
+  (hdegX : MvPolynomial.degreeOf 0 Q < t)
+  (hdegY : MvPolynomial.degreeOf 1 Q < q.natDegree) :
+  (MvPolynomial.eval₂Hom (Polynomial.C : F →+* Polynomial F)
+      (fun i : Fin 2 => if i = 0 then q else Polynomial.X) Q).natDegree < t * q.natDegree :=
+by sorry
 
 noncomputable def polyFold
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
@@ -117,7 +117,7 @@ lemma folding
   (f : L → F)
   (k : ℕ) -- We might need an assumption that k is a factor of d
   (C1 : ReedSolomonCode F L d)
-  (C2 : ReedSolomonCode F (powDom k L) (d/k))
+  (C2 : ReedSolomonCode F (powDom L k) (d/k))
   (δ : {x : ℝ // 0 < x ∧ x < foldingRange C1 f}) :
     (PMF.uniformOfFintype F).toOuterMeasure { r |
             fractionalHammingDistSet

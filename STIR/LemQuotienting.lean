@@ -83,6 +83,6 @@ lemma quotienting
   (Ans Fill : S → F)
   (δ : ℝ) (hδ : 0 < δ ∧ δ < 1)
   (h : ∀ u, u ∈ C1.List f δ → ∃ (x : ↑L) (hx : x.val ∈ S), u x ≠ Ans ⟨x.val, hx⟩) :
-  (fractionalHammingDistSet (Quotient F L f S Ans Fill) C2.code C2.nonempty : ℝ)
-    + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ := by
+    (fractionalHammingDistSet (Quotient F L f S Ans Fill) C2.code C2.nonempty : ℝ)
+      + ((T F L f S Ans).card : ℝ) / (L.card : ℝ) > δ := by
   sorry

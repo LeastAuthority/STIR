@@ -10,7 +10,7 @@ import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
 import Mathlib.Data.Fintype.Basic
 
-/- Prob-/
+
 noncomputable def listDecodingCollisionProbability
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
