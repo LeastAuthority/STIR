@@ -25,7 +25,7 @@ structure IOPP
 
 
 /-- STIR Main Theorem -/
-theorem STIR_main_theorem
+theorem STIR
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F} (hsmooth : smoothDom L)
   {d : ℕ} (hd : ∃ m, d = 2^m)
