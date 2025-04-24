@@ -1,3 +1,1 @@
 1.) Make err parameterized over the interval-split bound
-2.) For given (smooth?) L, we need the set of all y in L such that y^k is in L^k (not precise)
-3.) If f ∈ RS[F, ⟨ω⟩, d], then, for every r, Fold() ∈ RS[F, ⟨ωk⟩, d/k]; 
