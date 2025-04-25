@@ -10,7 +10,10 @@ import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
 import Mathlib.Data.Fintype.Basic
 
+/-! Section 4.3 in https://eprint.iacr.org/2024/390.pdf -/
 
+
+/-- Pr_{r₀, …, rₛ₋ ₁  ← 𝔽\L} [∃ distinct u, u′ ∈ List(f, d, δ) : ∀ i ∈ [0...s-1], u(r_i) = u′(r_i)] -/
 noncomputable def listDecodingCollisionProbability
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
@@ -23,8 +26,8 @@ noncomputable def listDecodingCollisionProbability
     ∃ (u u' : ↥C.code),
       u.val ≠ u'.val ∧
       -- both u and u' lie within δ of some target f
-      u.val ∈ C.List u.val δ ∧
-      u'.val ∈ C.List u.val δ ∧
+      u.val ∈ C.list u.val δ ∧
+      u'.val ∈ C.list u.val δ ∧
       -- their interpolating polynomials agree on each sampled r_i
       ∀ i : Fin s,
         (C.poly u).eval (r i).val = (C.poly u').eval (r i).val
@@ -38,7 +41,7 @@ lemma outOfDomainSmpl_1
   (δ : ℝ)
   (l s : ℕ)
   (h_decodable : C.listDecodable δ l) :
-  listDecodingCollisionProbability C δ s C.domainComplementNonempty ≤
+  listDecodingCollisionProbability C δ s C.domain_complement_nonempty ≤
     (l.choose 2) * ((d - 1) / (Fintype.card F - L.card))^s := by sorry
 
 lemma outOfDomainSmpl_2
@@ -49,5 +52,5 @@ lemma outOfDomainSmpl_2
   (δ : ℝ)
   (l s : ℕ)
   (h_decodable : C.listDecodable δ l) :
-  listDecodingCollisionProbability C δ s C.domainComplementNonempty ≤
+  listDecodingCollisionProbability C δ s C.domain_complement_nonempty ≤
     (l^2 / 2) * (d / (Fintype.card F - L.card))^s := by sorry
