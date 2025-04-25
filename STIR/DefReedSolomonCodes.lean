@@ -65,7 +65,7 @@ noncomputable def poly (C : ReedSolomonCode F L d) (f : C.code) : Polynomial F :
   Lagrange.interpolate L.attach (fun i => (i : F)) f
 
 /-- Rate of a Reed-Solomon code ρ := d/|L| -/
-noncomputable def rate : ℝ := d / L.card
+noncomputable def rate (_C : ReedSolomonCode F L d) : ℝ := d / L.card
 
 /-- L≠∅ → |C.code| ≥ 2 since |𝔽| ≥ 2 -/
 lemma nonempty (C : ReedSolomonCode F L d) : C.code.Nonempty := sorry
@@ -79,7 +79,7 @@ def listDecodable (C : ReedSolomonCode F L d) (δ : ℝ) (l : ℝ) : Prop :=
   ∀ f : L → F, (C.list f δ).card < l
 
 /-- Complement of the evaluation set `L` in `F` i.e. `F\L` as a Finset -/
-noncomputable def domainComplement (_C : ReedSolomonCode F L d) : Finset F :=
+def domainComplement (_C : ReedSolomonCode F L d) : Finset F :=
   Finset.univ \ L
 
 /-- L ≠ F → F\L ≠ ∅ -/
