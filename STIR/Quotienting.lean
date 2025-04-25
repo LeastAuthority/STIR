@@ -1,11 +1,11 @@
 /-
-Copyright (c) 2025 ZKLib Contributors. All rights reserved.
+Copyright (c) 2025 ArkLib Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Least Authority
 -/
 
-import STIR.DefFracHammingDist
-import STIR.DefReedSolomonCodes
+import STIR.FracHammingDist
+import STIR.ReedSolomonCodes
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Data.Finset.Basic

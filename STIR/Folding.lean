@@ -1,12 +1,12 @@
 /-
-Copyright (c) 2025 ZKLib Contributors. All rights reserved.
+Copyright (c) 2025 ArkLib Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Least Authority
 -/
 
-import STIR.DefReedSolomonCodes
-import STIR.DefProximityBound
-import STIR.DefSmoothDom
+import STIR.ReedSolomonCodes
+import STIR.ProximityBound
+import STIR.SmoothDom
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
@@ -33,8 +33,9 @@ def evalBivar
 
 /-The STIR paper assumes that the polynomials f(.) and Q(q(.),.) are fully determined by their
   evaluations on F, which is not necessarily true for arbitrary polynomials of degrees larger then
-  |F|. So we include an assumption in what follows that q has degree < |F| fom which the uniqueness
-  of f and Q can be derived from their evaluation on F -/
+  |F|. So we include an assumption in what follows that q has degree < |F| from which the uniqueness
+  of f and Q can be derived from their evaluation on F.
+  Alternativelx we could use the identify of polynomials  f(.) = Q(q(.), .) instead -/
 lemma existsUniqueFold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeg_q_max : q.natDegree < Fintype.card F)
@@ -50,7 +51,7 @@ lemma existsUniqueFold
       (∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z) ∧
   (∀ t : ℕ, f.natDegree < t * q.natDegree → MvPolynomial.degreeOf 0 Q < t):=
 
-  /- The construction proof of Q is not in STIR but its proposition 6.3 in
+  /- The construction of Q is not in STIR but its proposition 6.3 in
       https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf ...
       Unfortunately 𝔽[X,Y] is not an Euclidean Domain, so this proof might need some work
       to show existence of polynomials Q and Q' such that P = Q'*(y- q) + Q ...

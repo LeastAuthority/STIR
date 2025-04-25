@@ -1,10 +1,10 @@
 /-
-Copyright (c) 2025 ZKLib Contributors. All rights reserved.
+Copyright (c) 2025 ArkLib Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Least Authority
 -/
 
-import STIR.DefFracHammingDist
+import STIR.FracHammingDist
 
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.FieldTheory.Finite.GaloisField
@@ -41,7 +41,7 @@ def polynomialEvalOn (F : Type*) [Field F] [Fintype F] [DecidableEq F] (L : Fins
     λ (x : ↑L) => p.eval x.val
 
 
-/-- The ReedSolomonCode structure, storing the codewords as `Finset (↑L → F)`. -/
+/-- The ReedSolomonCode structure, storing the codewords as `Finset (L → F)`. -/
 structure ReedSolomonCode
   (F : Type*) [Field F] [Fintype F] [DecidableEq F]
   (L : Finset F)

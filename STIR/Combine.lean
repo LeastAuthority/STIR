@@ -1,12 +1,12 @@
 /-
-Copyright (c) 2025 ZKLib Contributors. All rights reserved.
+Copyright (c) 2025 ArkLib Contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Least Authority
 -/
 
-import STIR.DefProximityBound
-import STIR.DefFracHammingDist
-import STIR.DefReedSolomonCodes
+import STIR.ProximityBound
+import STIR.FracHammingDist
+import STIR.ReedSolomonCodes
 
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Probability.Distributions.Uniform
