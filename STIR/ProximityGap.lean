@@ -16,8 +16,10 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
+/-! Section 4.1 in https://eprint.iacr.org/2024/390.pdf -/
 
-lemma proximityGap
+
+lemma proximity_gap
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}

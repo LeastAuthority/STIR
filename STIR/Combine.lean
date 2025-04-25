@@ -14,6 +14,8 @@ import Mathlib.Data.Finset.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Data.Fintype.Units
 
+namespace Combine
+
 /-! Section 4.5 in https://eprint.iacr.org/2024/390.pdf -/
 
 /-- Geometric series formula in a field, for a unit `r : Fˣ`. -/
@@ -130,3 +132,5 @@ lemma combine
       ∀ i : Fin m, ∃ u : (L → F),
       u ∈ (Ci i).code ∧
       ∀ x : L, x.val ∈ S → fs i x = u x := by sorry
+
+end Combine

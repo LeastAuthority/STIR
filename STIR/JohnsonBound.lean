@@ -8,7 +8,7 @@ import STIR.ReedSolomonCodes
 
 import Mathlib.Data.Real.Sqrt
 
-lemma JohnsonBound
+lemma johnson_bound
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
   {d : ℕ}

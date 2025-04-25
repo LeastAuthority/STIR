@@ -26,6 +26,8 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
+namespace Folding
+
 /-! Section 4.4 in https://eprint.iacr.org/2024/390.pdf -/
 
 
@@ -152,3 +154,5 @@ lemma folding
             ≤ δ.val } > err' F (d/k) C1.rate δ k -- Double check if this really is C1.rate not C2.rate
 
    := by sorry
+
+end Folding
