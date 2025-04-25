@@ -26,9 +26,12 @@ import Mathlib.Data.Nat.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Real.Sqrt
 
+/-! Section 4.4 in https://eprint.iacr.org/2024/390.pdf -/
+
+
 /-- Helper For Readability: Evaluate a bivariate polynomial Q at (a, b) ∈ F×F -/
 def evalBivar
-  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {F  : Type*} [Field F]
   (Q : MvPolynomial (Fin 2) F) (a b : F) : F := MvPolynomial.eval (Fin.cases a (fun _ ↦ b)) Q
 
 /-The STIR paper assumes that the polynomials f(.) and Q(q(.),.) are fully determined by their
@@ -36,8 +39,9 @@ def evalBivar
   |F|. So we include an assumption in what follows that q has degree < |F| from which the uniqueness
   of f and Q can be derived from their evaluation on F.
   Alternativelx we could use the identify of polynomials  f(.) = Q(q(.), .) instead -/
-lemma existsUniqueFold
-  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+/-- Fact 4.6.1 in STIR -/
+lemma exists_unique_bivariate
+  {F  : Type*} [Field F] [Fintype F]
   (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeg_q_max : q.natDegree < Fintype.card F)
   (f : Polynomial F) :
     -- Q ∈ 𝔽[X,Y]
@@ -68,8 +72,9 @@ lemma existsUniqueFold
   -/
   sorry
 
-lemma foldDegreeBound
-  {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
+/-- Fact 4.6.2 in STIR-/
+lemma degree_bound_bivariate
+  {F  : Type*} [Field F] [Fintype F]
   (q : Polynomial F) (hdeg_q_min : q.natDegree > 0) (hdeg_q_max : q.natDegree < Fintype.card F)
   {t : ℕ}
   (Q : MvPolynomial (Fin 2) F)
@@ -79,6 +84,7 @@ lemma foldDegreeBound
       (fun i : Fin 2 => if i = 0 then q else Polynomial.X) Q).natDegree < t * q.natDegree :=
 by sorry
 
+/-- `polyFold(f, k r)` “folds” the polynomial `f` producing a new polynomial of deree  `< ‖f‖/k`.-/
 noncomputable def polyFold
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   (f : Polynomial F)
@@ -89,15 +95,16 @@ noncomputable def polyFold
     let hdeg_q_max : q.natDegree < Fintype.card F := sorry
   -- choose the unique bivariate lift Q
     let Q : MvPolynomial (Fin 2) F :=
-    (Classical.choose (existsUniqueFold q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
+    (Classical.choose (exists_unique_bivariate q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
   -- now freeze Y ↦ r, X ↦ X, using the constant‐polynomial ring‐hom `Polynomial.C`
     MvPolynomial.eval₂Hom
       (Polynomial.C : F →+* Polynomial F)
       (fun i : Fin 2 => if i = 0 then Polynomial.X else Polynomial.C r)
       Q
 
+/-- For x ∈ L^k, p_x ∈ 𝔽[X] is the degree < k polynomial where p_x(y) = f(y) for every y ∈ L such that y^k = x.-/
 noncomputable def xPoly
-  {F : Type*} [Field F] [Fintype F] [DecidableEq F]
+  {F : Type*} [Field F] [DecidableEq F]
   (L : Finset F)
   (f : L → F)
   (k : ℕ)
@@ -110,6 +117,7 @@ noncomputable def xPoly
         let hL : i.1 ∈ L := (Finset.mem_filter.1 i.2).1
         f ⟨i.1, hL⟩
 
+/-- Fold(f,k, α) : L^K → 𝔽;  Fold(f, k, α)(x) := p_x(α) -/
 noncomputable def fold
   {F  : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
@@ -118,6 +126,7 @@ noncomputable def fold
   (α : F) : powDom L k → F :=
     fun x => (xPoly L f k x).eval α
 
+/-- min{∆(f, RSC[F, L, d]), 1 − B^⋆(ρ)} -/
 noncomputable def foldingRange
   {F : Type*} [Field F] [Fintype F] [DecidableEq F]
   {L : Finset F}
