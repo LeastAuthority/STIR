@@ -8,8 +8,9 @@ Authors: Least Authority
 
 In the following, we start by defining the \emph{quotient} of a univariate function.
 \begin{definition}\label{def:quotient}
-%\lean{}
-%\leanok
+\lean{quotient}
+\leanok
+%\uses{}
     Let $f:\evaldomain\to\field$ be a function, $S\subseteq\field$ be a set, and $\mathsf{Ans},\mathsf{Fill}: S\rightarrow\field$ be functions. Let $\hat{\mathsf{Ans}}\in\field^{<|S|}[X]$ be the (unique) polynomial with $\hat{\mathsf{Ans}}(x)=\mathsf{Ans}(x)$ for every $x\in S$, and let $\hat{V}_S\in\field^{<|S|+1}[X]$ be the unique non-zero polynomial with $\hat{V}_S(x)=0$ for every $x\in S$.
     The \emph{quotient function} $\mathsf{Quotient}\bigl(f,S,\mathsf{Ans},\mathsf{Fill}\bigr): \evaldomain\to\field$
     is defined as follows:
@@ -29,8 +30,9 @@ In the following, we start by defining the \emph{quotient} of a univariate funct
 Next we define the polynomial quotient operator, which quotients a polynomial relative to its output on evaluation points. The polynomial quotient is a polynomial of lower degree.
 
 \begin{definition}\label{def:poly_quotient}
-%\lean{}
-%\leanok
+\lean{polyQuotient}
+\leanok
+\uses{}
     Let $\hat{f}\in\field^{<\degree}[X]$ be a polynomial and $S\subseteq\field$ be a set, let $\hat{V}_S\in\field^{<|S|+1}[X]$ be the unique non-zero polynomial with $\hat{V}_S(x)=0$ for every $x\in S$. The \emph{polynomial quotient} $\mathsf{PolyQuotient}(\hat{f},S)\in\field^{<d-|S|}[X]$ is defined as follows:
     \[
             \mathsf{PolyQuotient}(\hat{f},S)(X):=\frac{\hat{f}(X)-\hat{\mathsf{Ans}}(X)}{\hat{V}_S(X)}
@@ -41,7 +43,7 @@ Next we define the polynomial quotient operator, which quotients a polynomial re
 The following lemma, implicit in prior works, shows that if the function is ``quotiented by the wrong value'', then its quotient is far from low-degree.
 
 \begin{lemma}\label{lemma:quotienting}
-%\lean{}
+\lean{quotienting}
 \leanok
 \uses{def:quotient,def:rscode,def:list_decodable}
     Let $f:\evaldomain\rightarrow\field$ be a function, $\degree\in\N$ be the degree parameter, $\distance\in(0,1)$

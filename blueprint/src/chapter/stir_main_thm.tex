@@ -24,64 +24,68 @@ If $|\field|=\Omega(\frac{\lambda\cdot2^\lambda\cdot\degree^2\cdot{|\evaldomain|
 \end{itemize}
 \end{theorem}
 
-\section{The STIR Construction}\label{subsec:stir_constr}
-Consider the following ingrediants:
-\begin{itemize}
-    \item a field $\field$,
-    \item an iteration count $M\in\N$,
-    \item an initial degree parameter $\degree\in\N$ that is a power of $2$,
-    \item a folding parameters $k_0,\ldots,k_M\in\N$ that are powers of $2$ with $\degree\geq\prod_{i}k_i$,
-    \item evaluation domains $\evaldomain_0,\ldots,\evaldomain_M\subseteq\field$ where $\evaldomain_i$ is a smooth coset of ${\field}^*$ with $|\evaldomain_i|>\frac{\degree}{\prod_{j<i}k^j}$
-    \item repetition parameters $t_0,\ldots,t_M\in\N$ where $t_i+1\leq\frac{\degree}{\prod_{j\leq i}k^j}$ for every $i\in\{0,\ldots,M-1\}$,
-    \item out of domain repetition parameter $s\in\N$.
-\end{itemize}
-For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$. The protocol proceeds as follows.
+% %
+% \section{The STIR Construction}\label{subsec:stir_constr}
+% Consider the following ingrediants:
+% \begin{itemize}
+%     \item a field $\field$,
+%     \item an iteration count $M\in\N$,
+%     \item an initial degree parameter $\degree\in\N$ that is a power of $2$,
+%     \item a folding parameters $k_0,\ldots,k_M\in\N$ that are powers of $2$ with $\degree\geq\prod_{i}k_i$,
+%     \item evaluation domains $\evaldomain_0,\ldots,\evaldomain_M\subseteq\field$ where $\evaldomain_i$ is a smooth coset of ${\field}^*$ with $|\evaldomain_i|>\frac{\degree}{\prod_{j<i}k^j}$
+%     \item repetition parameters $t_0,\ldots,t_M\in\N$ where $t_i+1\leq\frac{\degree}{\prod_{j\leq i}k^j}$ for every $i\in\{0,\ldots,M-1\}$,
+%     \item out of domain repetition parameter $s\in\N$.
+% \end{itemize}
+% For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$. The protocol proceeds as follows.
 
-\begin{itemize}
-  \item\textbf{Initial function:} Let $f_0:\evaldomain\rightarrow\field$ be an oracle function. In the honest case, $f_0=\rscode[\field,\evaldomain_0,\degree_0]$ and the prover has access to the polynomial $\hat{f}\in\field^{<\degree_0}[X]$ whose restriction to $\evaldomain_0$ is $f_0$.
-  \item \textbf{Initial folding:} The verifier sends $r^{\mathsf{Fold}}\gets\field$
-  \item \textbf{Interaction phase loop:} For $i\in\{1,\ldots,M\}$:
-  \begin{enumerate}
-    \item \textbf{Send folded function:} The prover sends a function $g_i:\evaldomain_i\rightarrow\field$. In the honest case $g_i$ is the evaluation of the polynomial $\hat{g}_i:=\mathsf{PolyFold}(\hat{f}_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ over $\evaldomain_i$.
-    \item \textbf{Out-of-domain samples:} The verifier sends $r_{i,1}^{\mathsf{out}},\ldots,r_{i,s}^{\mathsf{out}}\in\field\setminus\evaldomain_i$
-    \item \textbf{Out-of-domain reply:}
-    The prover sends field elements
-    $\beta_{i,1},\dots,\beta_{i,s}\in\field$. In the honest case,
-    $\beta_{i,j}:=\hat{g}_{i}(r_{i,j}^{\mathsf{out}})$.
-    \item \textbf{STIR message:} The verifier sends $r^{\mathsf{fold}}_i,r^{\mathsf{shift}}_i\in\field$ and $r_{i,1}^{\mathsf{shift}},\ldots,r_{i,t_{i-1}}^{\mathsf{shift}}\gets\evaldomain^{k_i-1}_{i-1}$
-    \item \textbf{Define next polynomial and send hole fills:} The prover sends the oracle message $\mathsf{Fill}_i:=(r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}})\cap\evaldomain_i\rightarrow\field$. In the honest case, the prover defines $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$, $\hat{g}'_i:=\mathsf{PolyQuotient}(\hat{g}_i,\mathcal{G}_i)$ and $\mathsf{Fill}_i(r^{\mathsf{shift}}_{i,j}):=\hat{g}'_i(r^{\mathsf{shift}}_{i,j})$ $(\text{ If }r^{\mathsf{shift}}_{i,j}\in\evaldomain_i)$
+% \begin{itemize}
+%   \item\textbf{Initial function:} Let $f_0:\evaldomain\rightarrow\field$ be an oracle function. In the honest case, $f_0=\rscode[\field,\evaldomain_0,\degree_0]$ and the prover has access to the polynomial $\hat{f}\in\field^{<\degree_0}[X]$ whose restriction to $\evaldomain_0$ is $f_0$.
+%   \item \textbf{Initial folding:} The verifier sends $r^{\mathsf{Fold}}\gets\field$
+%   \item \textbf{Interaction phase loop:} For $i\in\{1,\ldots,M\}$:
+%   \begin{enumerate}
+%     \item \textbf{Send folded function:} The prover sends a function $g_i:\evaldomain_i\rightarrow\field$. In the honest case $g_i$ is the evaluation of the polynomial $\hat{g}_i:=\mathsf{PolyFold}(\hat{f}_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ over $\evaldomain_i$.
+%     \item \textbf{Out-of-domain samples:} The verifier sends $r_{i,1}^{\mathsf{out}},\ldots,r_{i,s}^{\mathsf{out}}\in\field\setminus\evaldomain_i$
+%     \item \textbf{Out-of-domain reply:}
+%     The prover sends field elements
+%     $\beta_{i,1},\dots,\beta_{i,s}\in\field$. In the honest case,
+%     $\beta_{i,j}:=\hat{g}_{i}(r_{i,j}^{\mathsf{out}})$.
+%     \item \textbf{STIR message:} The verifier sends $r^{\mathsf{fold}}_i,r^{\mathsf{shift}}_i\in\field$ and $r_{i,1}^{\mathsf{shift}},\ldots,r_{i,t_{i-1}}^{\mathsf{shift}}\gets\evaldomain^{k_i-1}_{i-1}$
+%     \item \textbf{Define next polynomial and send hole fills:} The prover sends the oracle message $\mathsf{Fill}_i:=(r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}})\cap\evaldomain_i\rightarrow\field$. In the honest case, the prover defines $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$, $\hat{g}'_i:=\mathsf{PolyQuotient}(\hat{g}_i,\mathcal{G}_i)$ and $\mathsf{Fill}_i(r^{\mathsf{shift}}_{i,j}):=\hat{g}'_i(r^{\mathsf{shift}}_{i,j})$ $(\text{ If }r^{\mathsf{shift}}_{i,j}\in\evaldomain_i)$
 
-    Additionally, the honest prover defines the degree-corrected polynomial 
-    $\hat{f}_i \in \field^{<\degree}[X]$ as follows:
-    \[
-        \hat{f}_i 
-        :=\degcorr(\degree_i,r_{i}^{\mathsf{comb}},\hat{g}'_i,\degree_i-|\mathcal{G}_i|)
-    \]
-  The protocol proceeds to the next iteration with $\hat{f}_i$.
-  \end{enumerate}   
-  \item \textbf{Final round:} The prover sends $\degree_M$ coefficients of a polynomial $\hat{p}\in\field^{<\degree_M}[X]$. In the honest case, $\hat{p}:=\mathsf{Fold}(\hat{f}_M,k_M,r^{\mathsf{fold}_M})$.
-  \item \textbf{Verifier decision phase:} 
-  \begin{enumerate}
-    \item \textbf{Main loop:} For $i=1,\ldots,M:$
-    \begin{enumerate}
-        \item For every $j\in [t_{i-1}]$, query $\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ at $r^{\mathsf{shift}}_{i,j}$. This involves querying $f_{i-1}$ at all $k_{i-1}$ points $x\in{\evaldomain}_{i-1}$ with $x^{k_i-1}=r^{\mathsf{shift}}_{i,j}$.
-        \item Define $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$ and let $\mathsf{Ans}_i:\mathcal{G}_i\rightarrow\field$ be the function where $\mathsf{Ans}_i(r^{\mathsf{out}}_{i,j})=\beta_{i,j}$ and $\mathsf{Ans}_{i}(r^{\mathsf{shift}}_{i,j})=\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})(r^{\mathsf{shift}}_{i,j})$. Finally, (virtually) set $g'_i:=\mathsf{Quotient}(g_i,\mathcal{G}_i,\mathsf{Ans}_i,\mathsf{Fill}_i)$.
-        \item Define the virtual oracle $f_i:\evaldomain_i\rightarrow\field$ as follows:
-        \[
-            f_i:=\degcorr(\degree_i,r^{\mathsf{comb}}_i,g'_i,\degree_i-|\mathcal{G}_i|).
-        \]
-        Observe that a query $x$ to $f_i$ translates to a single query either to $g_i$ $(\text{ if} (x\notin\mathcal{G}_i))$ or to $\mathsf{Fill}_i$ $(\text{ If } (x\in\mathcal{G}_i))$.
-    \end{enumerate}
-    \item\textbf{Consistency with final polynomial:} 
-    \begin{enumerate}
-        \item Sample random points $r^{\mathsf{fin}}_1,\ldots,r^{\mathsf{fin}}_{t_M}\rightarrow\evaldomain^{k_M}_{M}.$
-        \item Check that $\hat{p}(r^{\mathsf{fin}}_j)=\mathsf{Fold}(f_M,k_M,r^{\mathsf{fold}}_M)(r^{\mathsf{fin}}_j)$ for every $j\in[t_M]$.
-    \end{enumerate}
-    \item\textbf{Consistency with $\mathsf{Ans}$:} For every $i\in\{i,\ldots,M\}$ and every $x_i\in\mathcal{G}_i\cap\evaldomain_i$ query $g_i(x)$ and check that $g_i(x)=\mathsf{Ans}_i(x)$.
-  \end{enumerate}
-\end{itemize}
+%     Additionally, the honest prover defines the degree-corrected polynomial 
+%     $\hat{f}_i \in \field^{<\degree}[X]$ as follows:
+%     \[
+%         \hat{f}_i 
+%         :=\degcorr(\degree_i,r_{i}^{\mathsf{comb}},\hat{g}'_i,\degree_i-|\mathcal{G}_i|)
+%     \]
+%   The protocol proceeds to the next iteration with $\hat{f}_i$.
+%   \end{enumerate}   
+%   \item \textbf{Final round:} The prover sends $\degree_M$ coefficients of a polynomial $\hat{p}\in\field^{<\degree_M}[X]$. In the honest case, $\hat{p}:=\mathsf{Fold}(\hat{f}_M,k_M,r^{\mathsf{fold}_M})$.
+%   \item \textbf{Verifier decision phase:} 
+%   \begin{enumerate}
+%     \item \textbf{Main loop:} For $i=1,\ldots,M:$
+%     \begin{enumerate}
+%         \item For every $j\in [t_{i-1}]$, query $\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})$ at $r^{\mathsf{shift}}_{i,j}$. This involves querying $f_{i-1}$ at all $k_{i-1}$ points $x\in{\evaldomain}_{i-1}$ with $x^{k_i-1}=r^{\mathsf{shift}}_{i,j}$.
+%         \item Define $\mathcal{G}_i=\{r^{\mathsf{out}}_{i,1},\ldots,r^{\mathsf{out}}_{i,s},r^{\mathsf{shift}}_{i,1},\ldots,r^{\mathsf{shift}}_{i,t_{i-1}}\}$ and let $\mathsf{Ans}_i:\mathcal{G}_i\rightarrow\field$ be the function where $\mathsf{Ans}_i(r^{\mathsf{out}}_{i,j})=\beta_{i,j}$ and $\mathsf{Ans}_{i}(r^{\mathsf{shift}}_{i,j})=\mathsf{Fold}(f_{i-1},k_{i-1},r^{\mathsf{fold}}_{i-1})(r^{\mathsf{shift}}_{i,j})$. Finally, (virtually) set $g'_i:=\mathsf{Quotient}(g_i,\mathcal{G}_i,\mathsf{Ans}_i,\mathsf{Fill}_i)$.
+%         \item Define the virtual oracle $f_i:\evaldomain_i\rightarrow\field$ as follows:
+%         \[
+%             f_i:=\degcorr(\degree_i,r^{\mathsf{comb}}_i,g'_i,\degree_i-|\mathcal{G}_i|).
+%         \]
+%         Observe that a query $x$ to $f_i$ translates to a single query either to $g_i$ $(\text{ if} (x\notin\mathcal{G}_i))$ or to $\mathsf{Fill}_i$ $(\text{ If } (x\in\mathcal{G}_i))$.
+%     \end{enumerate}
+%     \item\textbf{Consistency with final polynomial:} 
+%     \begin{enumerate}
+%         \item Sample random points $r^{\mathsf{fin}}_1,\ldots,r^{\mathsf{fin}}_{t_M}\rightarrow\evaldomain^{k_M}_{M}.$
+%         \item Check that $\hat{p}(r^{\mathsf{fin}}_j)=\mathsf{Fold}(f_M,k_M,r^{\mathsf{fold}}_M)(r^{\mathsf{fin}}_j)$ for every $j\in[t_M]$.
+%     \end{enumerate}
+%     \item\textbf{Consistency with $\mathsf{Ans}$:} For every $i\in\{i,\ldots,M\}$ and every $x_i\in\mathcal{G}_i\cap\evaldomain_i$ query $g_i(x)$ and check that $g_i(x)=\mathsf{Ans}_i(x)$.
+%   \end{enumerate}
+% \end{itemize}
 
 \section{Round-by-round soundness}\label{sec:rnd_by_rnd_soundness}
+\lean{}
+\leanok{}
+\uses{def:iopp,def:rscode}
 \begin{lemma}\label{lemma:rnd_by_rnd_soundness}
     Consider $(\field,M,\degree,k_0,\ldots,k_M,\evaldomain_0,\ldots,\evaldomain_M,t_0,\ldots,t_M)$ and $\degree_0,\ldots,\degree_M$ as in Construction~\ref{subsec:stir_constr}, and for every $0\leq i\leq M$ let $\rate_i:=\degree_i/|\evaldomain_i|$. For every $f\notin\rscode[\field,\evaldomain_0,\degree_0]$ and every $\distance_0,\ldots,\distance_M$ where
     \begin{itemize}
@@ -89,7 +93,7 @@ For every $i\in\{0,\ldots,M\}$, set $\degree_i:=\frac{\degree}{\prod_{j<i}k^j}$.
         \item for every $0<i\leq M$: $\distance_i\in(0,\min{\{1-\rate_i-\frac{1}{|\evaldomain_i|},1-{\mathsf{B}^*(\rate_i)}\}})$, and
         \item for every $0<i\leq M$: $\rscode[\field,\evaldomain_i,\degree_i]$ is $(\distance_i,l_i)$-list decodable,
     \end{itemize}
-    STIR (Construction~\ref{subsec:stir_constr}) has round-by-round soundness error $(\epsilon^{\mathsf{fold}},\epsilon^{\mathsf{out}}_1,\epsilon^{\mathsf{shift}}_1,\ldots,\epsilon^{\mathsf{out}}_M,\epsilon^{\mathsf{shift}}_M,\epsilon^{\mathsf{fin}})$ where:
+    There exists an IOPP that has round-by-round soundness error $(\epsilon^{\mathsf{fold}},\epsilon^{\mathsf{out}}_1,\epsilon^{\mathsf{shift}}_1,\ldots,\epsilon^{\mathsf{out}}_M,\epsilon^{\mathsf{shift}}_M,\epsilon^{\mathsf{fin}})$ where:
     \begin{itemize}
         \item $\epsilon^{\mathsf{fold}}\leq\err^*(\degree_0/k_0,\rate_0,\distance_0,k_0)$.
         \item $\epsilon^{\mathsf{out}}_i\leq\frac{l^2_i}{2}\cdot{\big(\frac{\degree_i}{|\field|-|\evaldomain_i|}\big)}^s$

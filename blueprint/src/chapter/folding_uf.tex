@@ -10,8 +10,8 @@ STIR relies on $k$-wise folding of functions and polynomials - this is similar t
 The folding operator is based on the following fact, decomposing univariate polynomials into bivariate ones.
 
 \begin{fact}\label{fact:poly_folding} %todo- add citation BS08
-%\lean{}
-%\leanok
+\lean{exists_unique_bivariate,degree_bound_bivariate}
+\leanok
 Given a polynomial $\hat{q}\in\field[X]$:
 \begin{itemize}
     \item For every univariate polynomial $\hat{f}\in\field[X]$, there exists a unique bivariate polynomial $\hat{Q}\in\field[X,Y]$ with $\polydeg_X(\hat{Q}):=\lfloor{\polydeg(\hat{f})}/{\polydeg(\hat{q})}\rfloor$ and $\polydeg_Y(\hat{Q})<\polydeg(\hat{q})$ such that $\hat{f}(Z)=\hat{Q}(\hat{q}(Z),Z)$. Moreover $\hat{Q}$ can be computed efficiently given $\hat{f}$ and $\hat{q}$. Observe that if $\polydeg(\hat{f})<t\cdot\polydeg(\hat{q})$ then $\polydeg(\hat{Q})<t$.
@@ -21,15 +21,15 @@ Given a polynomial $\hat{q}\in\field[X]$:
 
 Below, we define folding of a polynomial followed by folding of a function.
 \begin{definition}\label{def:poly_folding}
-%\lean{}
-%\leanok
+\lean{polyFold}
+\leanok
 \uses{fact:poly_folding}
     Given a polynomial $\hat{f}\in\field^{<\degree}[X]$, a folding parameter $k\in\N$ and $r\in\field$, we define a polynomial $\mathsf{PolyFold}(\hat{f},k,r)\in\field^{\degree/k}[X]$ as follows. Let $\hat{Q}[X,Y]$ be the bivariate polynomial derived from $\hat{f}$ using Fact~\ref{fact:poly_folding} with $\hat{q}(X):=X^k$. Then $\mathsf{PolyFold}(\hat{f},k,r)(X):=\hat{Q}(X,r)$.
 \end{definition}
 
 \begin{definition}\label{def:fn_folding}
-%\lean{}
-%\leanok
+\lean{fold}
+\leanok
 Let $f:\evaldomain\rightarrow\field$ be a function, $k\in\N$ a folding parameter and $\alpha\in\field$. For every $x\in{\evaldomain}^k$, let $\hat{p}_x\in\field^{<k}[X]$ be the polynomial where $\hat{p}_x(y)=f(y)$ for every $y\in{\evaldomain}$ such that $y^k=x$. We define $\mathsf{Fold}(f,k,\alpha):\evaldomain\rightarrow\field$ as follows.
 \[
     \mathsf{Fold}(f,k,\alpha):=\hat{p}_x(\alpha).
@@ -40,8 +40,8 @@ In order to compute $\mathsf{Fold}(f,k,\alpha)(x)$ it suffices to interpolate th
 The following lemma shows that the distance of a function is preserved under folding. If a functions $f$ has distance $\distance$ to a Reed-Solomon code then, with high probability over the choice of folding randomness, its folding also has a distance of $\distance$ to the ``$k$-wise folded'' Reed-Solomon code.
 
 \begin{lemma}\label{lemma:folding}
-%\lean{}
-%\leanok
+\lean{folding}
+\leanok
 \uses{def:rscode,def:fn_folding}
     For every function $f:\evaldomain\rightarrow\field$, degree parameter $\degree\in\N$, folding parameter $k\in\N$, distance parameter $\distance\in(0,\min\{{\Delta(\mathsf{Fold}[f,k,r^{\mathsf{fold}}],\rscode[\field,{\evaldomain}^k, \degree/k]),1-{\mathsf{B}}^*(\rate)}\})$, letting $\rate:=\frac{\degree}{|\evaldomain|}$,
     \[

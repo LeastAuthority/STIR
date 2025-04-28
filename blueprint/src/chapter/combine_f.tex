@@ -8,6 +8,8 @@ Authors: Least Authority
 We show a new method for combining functions of varying degrees with minimal proximity require- ments using geometric sums. We begin by recalling a fact about geometric sums.
 
 \begin{fact}\label{fact:geometric_sum}
+\lean{geometric_sum_units}
+\leanok
     Let $\field$ be a field, $r\in\field$ be a field element, $a\in\N$ be a natural number. Then
     \[
         \sum_{i=0}^{a}r^i:=
@@ -19,7 +21,7 @@ We show a new method for combining functions of varying degrees with minimal pro
 \end{fact}
 
 \begin{definition}\label{def:combine}
-\lean{}
+\lean{combineInterm,combineFinal}
 \leanok
 %\uses{}
     Given target degree $\degree^*\in\N$, shifting parameter $r\in\field$, functions $f_1,\ldots,f_m:\evaldomain\rightarrow\field$, and degrees $0\leq \degree_1,\ldots,\degree_m\leq {\degree}^*$, we define $\combine(\degree^*,r,(f_1,\degree_1),\ldots,(f_m,\degree_m)):\evaldomain\rightarrow\field$ as follows:
@@ -35,8 +37,8 @@ Above, $r_1:=1$, $r_i:=r^{i-1+\sum_{j<i}(\degree^*-\degree_i)}$ for $i>1$.
 \end{definition}
 
 \begin{definition}\label{def:deg_corr}
-%\lean{}
-%\leanok
+\lean{degreeCorrInterm,degreeCorrFinal}
+\leanok
 \uses{def:combine}
     Given target degree $\degree^*\in\N$, shifting parameter $r\in\field$, function $f:\evaldomain\rightarrow\field$, and degree $0\leq\degree\leq\degree^*$, we define $\degcorr(\degree^*,r,f,\degree)$ as follows.
     \[
@@ -52,8 +54,8 @@ Above, $r_1:=1$, $r_i:=r^{i-1+\sum_{j<i}(\degree^*-\degree_i)}$ for $i>1$.
 Below it is shown that combining multiple polynomials of varying degrees can be done as long as the proximity error is bounded by $(\min{\{1-{\mathsf{B}}^*(\rate),1-\rate-1/|\evaldomain|\}})$.
 
 \begin{lemma}\label{lemma:combine}
-%\lean{}
-%\leanok
+\lean{combine}
+\leanok
 \uses{def:rscode,def:combine,def:deg_corr}
     Let $\degree^*$ be a target degree, $f_1,\ldots,f_m:\evaldomain\rightarrow\field$ be functions, $0\leq \degree_1,\ldots,\degree_m\leq \degree^*$ be degrees, $\distance\in\min{\{1-{\mathsf{B}}^*(\rate),1-\rate-1/|\evaldomain|\}}$ be a distance parameter, where $\rate=\degree^*/|\evaldomain|$. If
     \[
