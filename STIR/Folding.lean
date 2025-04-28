@@ -16,6 +16,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Tactic.NormNum
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.LinearAlgebra.Lagrange
+import Mathlib.Algebra.Polynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Basic
 import Mathlib.Algebra.MvPolynomial.Degrees
 import Mathlib.RingTheory.MvPolynomial.Groebner
@@ -30,6 +31,51 @@ namespace Folding
 
 /-! Section 4.4 in https://eprint.iacr.org/2024/390.pdf -/
 
+/- 𝔽[X,Y] is not an Euclidean Domain, but fixing an order on monomials still allows
+   to show exitance of bivariate polynomials Q', Q ∈ 𝔽[X;Y] such that
+   P = Q' * P' + Q for all P,P' ∈ 𝔽[X,Y] with P' having an invertible leading coefficient
+   (which on a field is equivalent to P' not being the zero polynomial).
+
+   This is MonomialOrder.div from Mathlib.RingTheory.MvPolynomial.Groebner
+
+   Using the usual lexicographic order x₀ > x₁ is equal to proposition 6.3 in
+   https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf under the
+   substitution z = x₀ and y = x₁, hence the following definition constructs
+   Q ∈ 𝔽[Z,Y] with P(z,y) = Q'(z,y) * R(z,y) + Q(z,y)
+-/
+/-- Given `P, P' ∈ 𝔽[Z,Y]`, `P' ≠ 0`, computes `Q ∈ 𝔽[Z,Y]`, with `P(z,y) = Q'(z,y) * P'(z,y) + Q(z,y)` for some `Q' ∈ 𝔽[Z,Y]` -/
+noncomputable def modBivar
+    {F : Type*} [Field F]
+    (P P' : MvPolynomial (Fin 2) F)
+    (hlg : IsUnit ((MonomialOrder.lex).leadingCoeff P')) : MvPolynomial (Fin 2) F :=
+      -- Lexicographic order on `Fin 2`.
+      let ord : MonomialOrder (Fin 2) := MonomialOrder.lex -- TODO: check if lex really is x₀ > x₁
+      -- Wrap the single divisor into a family indexed by `Unit`.
+      let b : Unit → MvPolynomial (Fin 2) F := fun _ => P'
+      -- Unit leading-coeff proof for every index (there is only one).
+      have hb : ∀ i : Unit, IsUnit (ord.leadingCoeff (b i)) := by
+        intro _; simpa [b, ord] using hlg
+      -- Apply Groebner-basis division:
+      -- hdiv : ∃ Q', ∃ Q, P =  P' * Q' + Q ∧ (side conditions)
+      have hdiv := ord.div (b := b) hb P
+      -- Peel off the two nested existentials and return the chosen remainder `r`.
+      Classical.choose (Classical.choose_spec hdiv)
+
+/-- maps the univariate polynomial P∈𝔽[Z] to the bivariate polynomial P'∈ 𝔽[Z,Y] with
+    P'(z,y) = P(z) -/
+noncomputable def uni2bi {F : Type*} [Field F] (p : Polynomial F) : MvPolynomial (Fin 2) F :=
+  Polynomial.eval₂ MvPolynomial.C (MvPolynomial.X 0) p
+
+/-- Computes Q(z,y) with P(z) = Q'(z,y) * (y- q(z)) + Q(z,y) as in
+    proposition 6.3 from https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf -/
+noncomputable def polyQ {F : Type*} [Field F] (P q : Polynomial F) : MvPolynomial (Fin 2) F :=
+  -- Pbi(z,y):= P(z)
+  let Pbi : MvPolynomial (Fin 2) F := uni2bi P
+  -- P'(z,y) := (y - q(z))
+  let P' : MvPolynomial (Fin 2) F := (MvPolynomial.X 1) - uni2bi q
+  -- proof that leading coefficient f q is not zero
+  have h_unit : IsUnit ((MonomialOrder.lex).leadingCoeff P') := sorry
+  modBivar Pbi P' h_unit
 
 /-- Helper For Readability: Evaluate a bivariate polynomial Q at (a, b) ∈ F×F -/
 def evalBivar
@@ -57,21 +103,7 @@ lemma exists_unique_bivariate
       (∀ z : F, Polynomial.eval z f = evalBivar Q (Polynomial.eval z q) z) ∧
   (∀ t : ℕ, f.natDegree < t * q.natDegree → MvPolynomial.degreeOf 0 Q < t):=
 
-  /- The construction of Q is not in STIR but its proposition 6.3 in
-      https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf ...
-      Unfortunately 𝔽[X,Y] is not an Euclidean Domain, so this proof might need some work
-      to show existence of polynomials Q and Q' such that P = Q'*(y- q) + Q ...
-
-      Using MonomialOrder.div from Mathlib.RingTheory.MvPolynomial.Groebner should work
-
-      In order to define polynomial division on the non-Euclidean Ring 𝔽[z,y] we need
-      to fix an order on monomials. Using the usual lexicographic order x₀ > x₁ is equal to
-      proposition 6.3 in https://people.csail.mit.edu/madhu/papers/2005/rspcpp-full.pdf
-      under the substitution z = x₀ and y = x₁
-
-      noncomputable def m : MonomialOrder (Fin 2) := MonomialOrder.lex is how you define
-      the order.
-  -/
+  /- The proof can parallel `def polyQ` using the properties guranteed from MonomialOrder.div from Mathlib.RingTheory.MvPolynomial.Groebner -/
   sorry
 
 /-- Fact 4.6.2 in STIR-/
@@ -96,8 +128,8 @@ noncomputable def polyFold
     let hdeg_q_min : q.natDegree > 0 := sorry
     let hdeg_q_max : q.natDegree < Fintype.card F := sorry
   -- choose the unique bivariate lift Q
-    let Q : MvPolynomial (Fin 2) F :=
-    (Classical.choose (exists_unique_bivariate q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
+    let Q : MvPolynomial (Fin 2) F := polyQ f q
+    -- alternative: (Classical.choose (exists_unique_bivariate q hdeg_q_min hdeg_q_max f ) : MvPolynomial (Fin 2) F)
   -- now freeze Y ↦ r, X ↦ X, using the constant‐polynomial ring‐hom `Polynomial.C`
     MvPolynomial.eval₂Hom
       (Polynomial.C : F →+* Polynomial F)
