@@ -5,7 +5,7 @@ import STIR.Combine
 import STIR.Folding
 import STIR.FracHammingDist
 import STIR.JohnsonBound
-import STIR.OutOfDomainSmpl
+import STIR.OutOfDomSmpl
 import STIR.ProximityBound
 import STIR.ProximityGap
 import STIR.Quotienting
