@@ -11,4 +11,4 @@ import STIR.ProximityGap
 import STIR.Quotienting
 import STIR.ReedSolomonCodes
 import STIR.SmoothDom
-import STIR.STIR_main
+import STIR.MainThm
